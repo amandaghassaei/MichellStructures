@@ -13,6 +13,10 @@ function Beam(nodes){
     sceneAdd(this.line);
 }
 
+Beam.prototype.update = function(){
+    //this.line.geometryNeed = true;
+};
+
 Beam.prototype.destroy = function(){
     sceneRemove(this.line);
     this.object3D = null;

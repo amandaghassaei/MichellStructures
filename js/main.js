@@ -7,9 +7,9 @@ $(function() {
 
     initThreeJS();
 
-    var _h = 20;
+    var _h = 40;
     var _L = 30;
-    var _n = 3;
+    var _n = 4;
     var _P = new THREE.Vector3(0,0,0);
 
     var supportVect = new THREE.Vector3(0, _h/2, 0);
@@ -18,10 +18,10 @@ $(function() {
     var displayNodes = [];
     var displayBeams = [];
 
-    var _nodes = solveMichell(_L, _n);
+    var _nodes = solveMichell(_h, _L, _n);
     plotNodes(_nodes, _n);
 
-    function solveMichell(L, n) {//L = length, layers = number of layers
+    function solveMichell(h, L, n) {//L = length, layers = number of layers
 
         if (n<1){
             console.log("n is < 1");
@@ -32,21 +32,37 @@ $(function() {
         }
         var nodes = [];
 
-        var gamma = Math.PI/4;
+        var gamma = Math.PI/2.5;
 
-        var lastLayer = [solveForMiddleVertex(supportVect, gamma)];
+        var lastLayer = [new THREE.Vector3(h/2*(1/Math.tan(gamma/2)), 0, 0)];
         nodes.push(lastLayer);
 
         for (var layer=2;layer<=n;layer++){
 
             var nextLayer = [];
-            nextLayer.push(solveForThirdVertex(lastLayer[0], supportVect, gamma));
+            var nextVertex = solveForThirdVertex(lastLayer[0], supportVect, gamma);
+            nextLayer.push(nextVertex);
+
+            var lastVertex = nextVertex;
 
             for (var num=1;num<layer;num++){
                 if (nextLayer.length+1 == layer){
-                    nextLayer.push(solveForMiddleVertex(nextLayer[nextLayer.length-1], gamma));
+                    nextLayer.push(solveForMiddleVertex(nextLayer[nextLayer.length-1], lastLayer[lastLayer.length-1], gamma));
                 } else {
-                    nextLayer.push(solveForThirdVertex(lastLayer[num], lastLayer[num-1], gamma/2));
+                    //not right, solve for intersection instead
+                    var vlower = lastLayer[num];
+                    var vupper = lastVertex;
+                    var vmiddle = lastLayer[num-1];
+
+                    var slopeLower = (vlower.x-vmiddle.x)/(vmiddle.y-vlower.y);
+                    var slopeUpper = (vmiddle.x-vupper.x)/(vupper.y-vmiddle.y);
+
+                    var x = (vupper.y-vlower.y+slopeLower*vlower.x-slopeUpper*vupper.x)/(slopeLower-slopeUpper);
+                    var y = slopeLower*(x-vlower.x)+vlower.y;
+
+                    nextVertex = new THREE.Vector3(x, y, 0);
+                    nextLayer.push(nextVertex);
+                    lastVertex = nextVertex;
                 }
             }
 
@@ -57,8 +73,8 @@ $(function() {
 
     }
 
-    function solveForMiddleVertex(v1, _gamma){//angle between them is gamma
-        return new THREE.Vector3(v1.y*(1/Math.tan(_gamma/2)), 0, 0);
+    function solveForMiddleVertex(v1, v2, _gamma){//angle between them is gamma
+        return new THREE.Vector3(v2.x+v1.y*(1/Math.sin(_gamma/2)), 0, 0);
     }
 
     function solveForThirdVertex(v1, v2, _gamma){//angle between them is gamma

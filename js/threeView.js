@@ -13,7 +13,7 @@ function initThreeJS(){
 
     scene.background = new THREE.Color( 0xffffff );
 
-    camera.position.z = 100;
+    camera.position.z = 200;
 }
 
 function render(){
