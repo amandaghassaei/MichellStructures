@@ -18,6 +18,5 @@ Beam.prototype.update = function(){
 };
 
 Beam.prototype.destroy = function(){
-    sceneRemove(this.line);
     this.object3D = null;
 };

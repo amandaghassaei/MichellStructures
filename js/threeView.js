@@ -19,7 +19,6 @@ function initThreeJS(){
     camera.updateProjectionMatrix();
     camera.position.z = 400;
 
-    wrapper.position.x = -500;
     scene.add(wrapper);
 }
 
@@ -31,13 +30,13 @@ function sceneAdd(object){
     wrapper.add(object);
 }
 
-function sceneRemove(object){
-    wrapper.remove(object);
+function sceneClear(){
+    wrapper.children = [];
 }
 
-function setScale(scale){
-
+function setScale(scale, width){
     wrapper.scale.set(scale, scale, scale);
+    wrapper.position.x = -width/2;
 }
 
 function onWindowResizeThree() {
