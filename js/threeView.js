@@ -3,8 +3,8 @@
  */
 
 var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-var renderer = new THREE.WebGLRenderer();
+var camera = new THREE.OrthographicCamera(window.innerWidth/-2, window.innerWidth/2, window.innerHeight/2, window.innerHeight/-2, 0.1, 1000);
+var renderer = new THREE.WebGLRenderer({antialias: true});
 
 function initThreeJS(){
 
@@ -13,7 +13,9 @@ function initThreeJS(){
 
     scene.background = new THREE.Color( 0xffffff );
 
-    camera.position.z = 200;
+    camera.zoom = 1;
+    camera.updateProjectionMatrix();
+    camera.position.z = 400;
 }
 
 function render(){
@@ -26,4 +28,17 @@ function sceneAdd(object){
 
 function sceneRemove(object){
     scene.remove(object);
+}
+
+function onWindowResizeThree() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.left = -window.innerWidth / 2;
+    camera.right = window.innerWidth / 2;
+    camera.top = window.innerHeight / 2;
+    camera.bottom = -window.innerHeight / 2;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    render();
 }

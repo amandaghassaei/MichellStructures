@@ -7,9 +7,13 @@ $(function() {
 
     initThreeJS();
 
+    window.addEventListener('resize', function(){
+        onWindowResizeThree();
+    }, false);
+
     var _h = 40;
     var _L = 30;
-    var _n = 4;
+    var _n = 3;
     var _P = new THREE.Vector3(0,0,0);
 
     var supportVect = new THREE.Vector3(0, _h/2, 0);
@@ -32,9 +36,9 @@ $(function() {
         }
         var nodes = [];
 
-        var gamma = Math.PI/2.5;
+        var gamma = Math.PI/3;
 
-        var lastLayer = [new THREE.Vector3(h/2*(1/Math.tan(gamma/2)), 0, 0)];
+        var lastLayer = [new THREE.Vector3(h/(2*Math.tan(gamma/2)), 0, 0)];
         nodes.push(lastLayer);
 
         for (var layer=2;layer<=n;layer++){
@@ -73,8 +77,8 @@ $(function() {
 
     }
 
-    function solveForMiddleVertex(v1, v2, _gamma){//angle between them is gamma
-        return new THREE.Vector3(v2.x+v1.y*(1/Math.sin(_gamma/2)), 0, 0);
+    function solveForMiddleVertex(v1, v2, _gamma){//angle between them is gamma/2
+        return new THREE.Vector3(v2.x+(v1.clone().sub(v2).length())*(1/Math.sin(_gamma/2)), 0, 0);
     }
 
     function solveForThirdVertex(v1, v2, _gamma){//angle between them is gamma

@@ -3,7 +3,7 @@
  */
 
 var nodeMaterial = new THREE.MeshBasicMaterial({color: 0x000000});
-var nodeGeometry = new THREE.CircleGeometry(1,20);
+var nodeGeometry = new THREE.CircleGeometry(4,20);
 
 function Node(position, mirror){
     position = position.clone();
