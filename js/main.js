@@ -17,6 +17,13 @@ $(function() {
     var _n = 5;
     var _P = new THREE.Vector3(0,0,0);
 
+    setUI();
+
+    function setUI() {
+        $("#lVal").html(_L);
+        $("#hVal").html(_h);
+    }
+
     var hSlider = $("#h").slider({
         orientation: 'vertical',
         range: false,
@@ -52,11 +59,13 @@ $(function() {
         if (_h == _L) {
             _L = _h+1;//prevent unsolvable system
         }
+        setUI();
         plotNodes(solveMichell(_h, _L, _n), _n, _h);
     });
 
     LSlider.on("slide", function(){
         _L = LSlider.slider('value');
+        setUI();
         plotNodes(solveMichell(_h, _L, _n), _n, _h);
     });
 
