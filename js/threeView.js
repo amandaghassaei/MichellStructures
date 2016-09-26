@@ -35,8 +35,11 @@ function sceneClear(){
 }
 
 function setScale(scale, width){
-    wrapper.scale.set(scale, scale, scale);
-    wrapper.position.x = -width/2;
+    _.each(scene.children, function(child){
+        child.scale.set(scale, scale, scale);
+        child.position.x = -width/2;
+    });
+
 }
 
 function onWindowResizeThree() {
