@@ -26,8 +26,8 @@ var lengthLine = new THREE.Object3D();
 scene.add(lengthLine);
 lengthLine.add(new THREE.ArrowHelper( new THREE.Vector3(1,0,0), new THREE.Vector3(0,0,0), 1, 0x000000));
 lengthLine.add(new THREE.ArrowHelper( new THREE.Vector3(-1,0,0), new THREE.Vector3(0,0,0), 1, 0x000000));
-lengthLine.children[0].line.material.linewidth = 3;
-lengthLine.children[1].line.material.linewidth = 3;
+lengthLine.children[0].line.material.linewidth = 2;
+lengthLine.children[1].line.material.linewidth = 2;
 
 var minHGeo = new THREE.Geometry();
 minHGeo.vertices.push(new THREE.Vector3());
@@ -45,9 +45,10 @@ var hLength = new THREE.Object3D();
 scene.add(hLength);
 hLength.add(new THREE.ArrowHelper( new THREE.Vector3(0,1,0), new THREE.Vector3(0,0,0), 1, 0x000000));
 hLength.add(new THREE.ArrowHelper( new THREE.Vector3(0,-1,0), new THREE.Vector3(0,0,0), 1, 0x000000));
-hLength.children[0].line.material.linewidth = 3;
-hLength.children[1].line.material.linewidth = 3;
+hLength.children[0].line.material.linewidth = 2;
+hLength.children[1].line.material.linewidth = 2;
 
+//var layersObj = new THREE.Object3D();
 
 
 
@@ -126,10 +127,11 @@ function plotNodes(nodes, n, h){
     var padding = 100;
     var scale = (window.innerWidth-2*padding)/widthMax;
 
-    var lineLengthY = -280/scale;
+    var arrowScale = 100;
+    var lineLengthY = -(window.innerHeight/2-80)/scale;
     //lengthLine.position.y = lineLengthY;
-    lengthLine.children[0].setLength(widthMax/2, widthMax/60, widthMax/60);
-    lengthLine.children[1].setLength(widthMax/2, widthMax/60, widthMax/60);
+    lengthLine.children[0].setLength(widthMax/2, widthMax/arrowScale, widthMax/arrowScale);
+    lengthLine.children[1].setLength(widthMax/2, widthMax/arrowScale, widthMax/arrowScale);
     //lengthLine.scale.set(scale, scale, scale);
     minLengthLineGeo.vertices[0].set(0, -h/2, 0);
     minLengthLineGeo.vertices[1].set(0, lineLengthY, 0);
@@ -141,8 +143,8 @@ function plotNodes(nodes, n, h){
     maxLengthLineGeo.computeLineDistances();
 
     var hLengthX = -30/scale;
-    hLength.children[0].setLength(h/2, widthMax/60, widthMax/60);
-    hLength.children[1].setLength(h/2, widthMax/60, widthMax/60);
+    hLength.children[0].setLength(h/2, widthMax/arrowScale, widthMax/arrowScale);
+    hLength.children[1].setLength(h/2, widthMax/arrowScale, widthMax/arrowScale);
     minHGeo.vertices[0].set(0, -h/2, 0);
     minHGeo.vertices[1].set(hLengthX, -h/2, 0);
     minHGeo.verticesNeedUpdate = true;

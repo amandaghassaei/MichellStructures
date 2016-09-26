@@ -2,6 +2,7 @@ html{
     width:100%;
     height:100%;
     padding:0;
+    font-family: 'Montserrat', sans-serif;
 }
 
 body{
@@ -15,6 +16,7 @@ body{
     width:100%;
     height:100%;
     padding:0;
+    position: absolute;
 }
 
 #controls{
@@ -25,8 +27,20 @@ body{
     width: 250px;
 }
 
+#lengthControl{
+    background: rgba(1,1,1,0);
+    width: 100%;
+    z-index: 4;
+    /*margin: 0 auto;*/
+    position: absolute;
+    bottom:0;
+}
 
-
+#lengthControl>div{
+    margin: 0 auto;
+    width: 250px;
+    text-align:center
+}
 
 
 
@@ -45,7 +59,7 @@ body{
 
 .flat-slider.ui-slider {
   border: 0;
-  background: #3d3d3d;
+  background: #ffffff;
   border-radius: 7px;
 }
 
@@ -85,6 +99,6 @@ body{
     display: inline-block;
     width: 200px;
     position: relative;
-    margin: 20px 0 10px 0;
+    margin: 10px 0 10px 0;
     padding: 4px 0;
 }
