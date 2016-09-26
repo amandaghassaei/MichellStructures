@@ -9,6 +9,7 @@ $(function() {
 
     window.addEventListener('resize', function(){
         onWindowResizeThree();
+        if (_nodes) plotNodes(_nodes, _n);
     }, false);
 
     var _h = 100;
@@ -29,7 +30,7 @@ $(function() {
         orientation: 'horizontal',
         range: false,
         value: _L,
-        min: 1,
+        min: _h+1,
         max: 10000,
         step: 1
     });
@@ -45,6 +46,12 @@ $(function() {
 
     hSlider.on("slide", function(){
         _h = hSlider.slider('value');
+        LSlider.slider({
+            min: _h+1
+        });
+        if (_h == _L) {
+            _L = _h+1;//prevent unsolvable system
+        }
         plotNodes(solveMichell(_h, _L, _n), _n);
     });
 
@@ -68,7 +75,8 @@ $(function() {
 
     function plotNodes(nodes, n){
 
-        var width = 0;
+        var widthMin = 0;
+        var widthMax = 0;
         var height = 0;
 
         sceneClear();
@@ -119,8 +127,11 @@ $(function() {
                 else lastLayerNodesMirror.push(nextNodeMirror);
 
                 var nextNodePosition = nextNode.getPosition();
-                if (nextNodePosition.x > width){
-                    width = nextNodePosition.x;
+                if (nextNodePosition.x > widthMax){
+                    widthMax = nextNodePosition.x;
+                }
+                if (nextNodePosition.x < widthMin){
+                    widthMin = nextNodePosition.x;
                 }
                 if (nextNodePosition.y > height){
                     height = nextNodePosition.y;
@@ -134,18 +145,10 @@ $(function() {
         height *= 2;
 
         //calculate scaling
-        var widthScale = 1;
         var padding = 100;
-        if ((window.innerWidth-2*padding)<width){
-            widthScale = (window.innerWidth-2*padding)/width;
-        }
-        var heightScale = 1;
-        if ((window.innerHeight-2*padding)<height){
-            heightScale = (window.innerHeight-2*padding)/height;
-        }
-        var scale = widthScale < heightScale ? widthScale : heightScale;
+        var scale = (window.innerWidth-2*padding)/widthMax;
 
-        setScale(scale, width);
+        setScale(scale, widthMax*scale);
 
         render();
     }
