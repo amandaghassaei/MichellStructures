@@ -18,7 +18,7 @@ $(function() {
     var _P = new THREE.Vector3(0,0,0);
 
     var hSlider = $("#h").slider({
-        orientation: 'horizontal',
+        orientation: 'vertical',
         range: false,
         value: _h,
         min: 1,

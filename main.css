@@ -36,10 +36,52 @@ body{
     bottom:0;
 }
 
+#hControl{
+    background: rgba(1,1,1,0);
+    height: 100%;
+    z-index: 4;
+    /*margin: 0 auto;*/
+    position: absolute;
+    left:0;
+}
+
 #lengthControl>div{
     margin: 0 auto;
     width: 250px;
     text-align:center
+}
+
+#hControl>div{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    /*height: 250px;*/
+    text-align:center
+}
+
+#h{
+    left: -10px;
+    height: 200px;
+}
+
+.rotate {
+        display: inline-block;
+
+/* Safari */
+-webkit-transform: rotate(-90deg);
+
+/* Firefox */
+-moz-transform: rotate(-90deg);
+
+/* IE */
+-ms-transform: rotate(-90deg);
+
+/* Opera */
+-o-transform: rotate(-90deg);
+
+/* Internet Explorer */
+filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+
 }
 
 
@@ -50,6 +92,12 @@ body{
     margin: 0;
     padding: 20px;
     top: 10px;
+}
+
+.slider.slider-vertical {
+    height: 200px;
+    margin: 0;
+    padding: 20px;
 }
 
 .flat-slider.ui-corner-all,
@@ -68,7 +116,6 @@ body{
 }
 
 .flat-slider.ui-slider-vertical {
-  height: 15em;
   width: 6px;
 }
 
@@ -87,6 +134,12 @@ body{
     opacity: 0.8;
 }
 
+.flat-slider.ui-slider-vertical .ui-slider-handle {
+  left: 50%;
+  margin-left: -10px;
+    opacity: 0.8;
+}
+
 .flat-slider .ui-slider-handle:hover {
   opacity: 0.7;
 }
@@ -100,5 +153,5 @@ body{
     width: 200px;
     position: relative;
     margin: 10px 0 10px 0;
-    padding: 4px 0;
+    /*padding: 4px 0;*/
 }
