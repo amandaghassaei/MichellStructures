@@ -13,7 +13,7 @@ function initThreeJS(){
     renderer.setSize( window.innerWidth, window.innerHeight );
     $("#threeDiv").append(renderer.domElement);
 
-    scene.background = new THREE.Color( 0xffffff );
+    scene.background = new THREE.Color(0x333333);
 
     camera.zoom = 1;
     camera.updateProjectionMatrix();

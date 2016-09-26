@@ -24,10 +24,30 @@ var maxLengthLine = new THREE.Line(maxLengthLineGeo, dashedLineMaterial);
 scene.add(maxLengthLine);
 var lengthLine = new THREE.Object3D();
 scene.add(lengthLine);
-lengthLine.add(new THREE.ArrowHelper( new THREE.Vector3(1,0,0), new THREE.Vector3(0,0,0), 1, 0x222222));
-lengthLine.add(new THREE.ArrowHelper( new THREE.Vector3(-1,0,0), new THREE.Vector3(0,0,0), 1, 0x222222));
+lengthLine.add(new THREE.ArrowHelper( new THREE.Vector3(1,0,0), new THREE.Vector3(0,0,0), 1, 0x000000));
+lengthLine.add(new THREE.ArrowHelper( new THREE.Vector3(-1,0,0), new THREE.Vector3(0,0,0), 1, 0x000000));
 lengthLine.children[0].line.material.linewidth = 3;
 lengthLine.children[1].line.material.linewidth = 3;
+
+var minHGeo = new THREE.Geometry();
+minHGeo.vertices.push(new THREE.Vector3());
+minHGeo.vertices.push(new THREE.Vector3());
+minHGeo.dynamic = true;
+var minH = new THREE.Line(minHGeo, dashedLineMaterial);
+scene.add(minH);
+var maxHGeo = new THREE.Geometry();
+maxHGeo.vertices.push(new THREE.Vector3());
+maxHGeo.vertices.push(new THREE.Vector3());
+maxHGeo.dynamic = true;
+var maxH = new THREE.Line(maxHGeo, dashedLineMaterial);
+scene.add(maxH);
+var hLength = new THREE.Object3D();
+scene.add(hLength);
+hLength.add(new THREE.ArrowHelper( new THREE.Vector3(0,1,0), new THREE.Vector3(0,0,0), 1, 0x000000));
+hLength.add(new THREE.ArrowHelper( new THREE.Vector3(0,-1,0), new THREE.Vector3(0,0,0), 1, 0x000000));
+hLength.children[0].line.material.linewidth = 3;
+hLength.children[1].line.material.linewidth = 3;
+
 
 
 
@@ -120,9 +140,22 @@ function plotNodes(nodes, n, h){
     maxLengthLineGeo.verticesNeedUpdate = true;
     maxLengthLineGeo.computeLineDistances();
 
+    var hLengthX = -30/scale;
+    hLength.children[0].setLength(h/2, widthMax/60, widthMax/60);
+    hLength.children[1].setLength(h/2, widthMax/60, widthMax/60);
+    minHGeo.vertices[0].set(0, -h/2, 0);
+    minHGeo.vertices[1].set(hLengthX, -h/2, 0);
+    minHGeo.verticesNeedUpdate = true;
+    minHGeo.computeLineDistances();
+    maxHGeo.vertices[0].set(0, h/2, 0);
+    maxHGeo.vertices[1].set(hLengthX, h/2, 0);
+    maxHGeo.verticesNeedUpdate = true;
+    maxHGeo.computeLineDistances();
+
     setScale(scale, widthMax*scale);
 
     lengthLine.position.set(0,lineLengthY*scale,0);
+    hLength.position.x += hLengthX*scale;
 
     render();
 }
