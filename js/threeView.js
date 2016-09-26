@@ -6,6 +6,8 @@ var scene = new THREE.Scene();
 var camera = new THREE.OrthographicCamera(window.innerWidth/-2, window.innerWidth/2, window.innerHeight/2, window.innerHeight/-2, 0.1, 1000);
 var renderer = new THREE.WebGLRenderer({antialias: true});
 
+var wrapper = new THREE.Object3D();//object to set global scale and position
+
 function initThreeJS(){
 
     renderer.setSize( window.innerWidth, window.innerHeight );
@@ -16,6 +18,9 @@ function initThreeJS(){
     camera.zoom = 1;
     camera.updateProjectionMatrix();
     camera.position.z = 400;
+
+    wrapper.position.x = -500;
+    scene.add(wrapper);
 }
 
 function render(){
@@ -23,11 +28,16 @@ function render(){
 }
 
 function sceneAdd(object){
-    scene.add(object);
+    wrapper.add(object);
 }
 
 function sceneRemove(object){
-    scene.remove(object);
+    wrapper.remove(object);
+}
+
+function setScale(scale){
+
+    wrapper.scale.set(scale, scale, scale);
 }
 
 function onWindowResizeThree() {

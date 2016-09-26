@@ -12,8 +12,8 @@ $(function() {
     }, false);
 
     var _h = 40;
-    var _L = 30;
-    var _n = 3;
+    var _L = 3000;
+    var _n = 5;
     var _P = new THREE.Vector3(0,0,0);
 
     var supportVect = new THREE.Vector3(0, _h/2, 0);
@@ -34,9 +34,25 @@ $(function() {
         if (n==1){
             return [[new THREE.Vector3(L,0,0)]];
         }
-        var nodes = [];
 
-        var gamma = Math.PI/3;
+        var gamma = Math.PI/4;//gamma between 0.01 and Math.PI/2-0.01
+
+        return binarySearchMichell(gamma, Math.PI/8, h, n, L);
+    }
+
+    function binarySearchMichell(gamma, stepSize, h, n, desiredLength){
+        var nodes = calcMichell(gamma, h, n);
+        var currentLength = getMichellLength(nodes);
+
+        if (Math.abs(currentLength-desiredLength)<0.001) return nodes;
+
+        if (currentLength>desiredLength) return binarySearchMichell(gamma+stepSize, stepSize/2, h, n, desiredLength);
+        return binarySearchMichell(gamma-stepSize, stepSize/2, h, n, desiredLength);
+    }
+
+    function calcMichell(gamma, h, n){
+
+        var nodes = [];
 
         var lastLayer = [new THREE.Vector3(h/(2*Math.tan(gamma/2)), 0, 0)];
         nodes.push(lastLayer);
@@ -74,7 +90,6 @@ $(function() {
             nodes.push(nextLayer);
         }
         return nodes;
-
     }
 
     function solveForMiddleVertex(v1, v2, _gamma){//angle between them is gamma/2
@@ -88,6 +103,16 @@ $(function() {
         return (new THREE.Vector3(a*Math.cos(rot), a*Math.sin(rot), 0)).add(v1);
     }
 
+    function getMichellLength(nodes){
+        var length = 0;
+        for (var i=0;i<nodes.length;i++){
+            for (var j=0;j<nodes[i].length; j++){
+                if (nodes[i][j].x>length) length = nodes[i][j].x;
+            }
+        }
+        return length;
+    }
+
     //function numNodesForN(n, val){
     //    if (val=== undefined) val = 0;
     //    val += n;
@@ -96,6 +121,9 @@ $(function() {
     //}
 
     function plotNodes(nodes, n){
+
+        var width = 0;
+        var height = 0;
 
         for (var i=0;i<displayNodes.length;i++){
             displayNodes[i].destroy();
@@ -140,10 +168,34 @@ $(function() {
                 if (lastLayerNodesMirror.length>j) lastLayerNodesMirror[j] = nextNodeMirror;
                 else lastLayerNodesMirror.push(nextNodeMirror);
 
+                var nextNodePosition = nextNode.getPosition();
+                if (nextNodePosition.x > width){
+                    width = nextNodePosition.x;
+                }
+                if (nextNodePosition.y > height){
+                    height = nextNodePosition.y;
+                }
+
                 lastNode = nextNode;
                 lastNodeMirror = nextNodeMirror;
             }
         }
+
+        height *= 2;
+
+        //calculate scaling
+        var widthScale = 1;
+        var padding = 100;
+        if ((window.innerWidth-2*padding)<width){
+            widthScale = (window.innerWidth-2*padding)/width;
+        }
+        var heightScale = 1;
+        if ((window.innerHeight-2*padding)<height){
+            heightScale = (window.innerHeight-2*padding)/height;
+        }
+        var scale = widthScale < heightScale ? widthScale : heightScale;
+
+        setScale(scale);
 
         render();
     }
