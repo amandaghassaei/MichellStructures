@@ -124,7 +124,7 @@ function plotNodes(nodes, n, h){
     height *= 2;
 
     //calculate scaling
-    var padding = 120;
+    var padding = 130;
     var scale = (window.innerWidth-2*padding)/widthMax;
 
     var arrowScale = 100;
