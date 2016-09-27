@@ -13,6 +13,19 @@ body{
     overflow: hidden;
 }
 
+img{
+    width:60px;
+    position: absolute;
+    top:0;
+    left:0;
+    z-index: 5;
+    margin:20px;
+}
+
+#activeLogo{
+    display: none;
+}
+
 #threeDiv {
     width:100%;
     height:100%;
@@ -26,6 +39,11 @@ body{
     right: 0;
     z-index: 3;
     width: 250px;
+        padding: 20px;
+}
+
+.label{
+    margin-right: 10px;
 }
 
 #lengthControl{
@@ -49,7 +67,8 @@ body{
 #lengthControl>div{
     margin: 0 auto;
     width: 250px;
-    text-align:center
+    text-align:center;
+    padding-bottom: 10px;
 }
 
 #hControl>div{
@@ -57,7 +76,8 @@ body{
     top: 50%;
     transform: translateY(-50%);
     /*height: 250px;*/
-    text-align:center
+    text-align:center;
+    width:200px;
 }
 
 #h{
@@ -66,6 +86,10 @@ body{
 }
 
 .rotate {
+        position: absolute;
+    left: -60px;
+    width: 200px;
+    top: 50%;
         display: inline-block;
 
 /* Safari */

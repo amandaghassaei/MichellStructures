@@ -74,6 +74,13 @@ $(function() {
         plotNodes(solveMichell(_h, _L, _n), _n, _h);
     });
 
+    $("#logo").mouseenter(function(){
+        $("#activeLogo").show();
+    });
+    $("#logo").mouseleave(function(){
+        $("#activeLogo").hide();
+    });
+
     var _nodes = solveMichell(_h, _L, _n);
     plotNodes(_nodes, _n, _h);
 

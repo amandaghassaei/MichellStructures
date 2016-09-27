@@ -19,7 +19,10 @@ function binarySearchMichell(gamma, stepSize, h, n, desiredLength){
     var nodes = calcMichell(gamma, h, n);
     var currentLength = getMichellLength(nodes);
 
-    if (Math.abs(currentLength-desiredLength)<0.001) return nodes;
+    if (Math.abs(currentLength-desiredLength)<0.001) {
+        $("#gamma").html(gamma.toFixed(2) + " Rad");
+        return nodes;
+    }
 
     if (currentLength>desiredLength) return binarySearchMichell(gamma+stepSize, stepSize/2, h, n, desiredLength);
     return binarySearchMichell(gamma-stepSize, stepSize/2, h, n, desiredLength);
