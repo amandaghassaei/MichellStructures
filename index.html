@@ -6,16 +6,20 @@
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="dependencies/jquery-ui.min.css">
-    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="stylesheet" type="text/css" href="dependencies/jquery-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="dependencies/modal.css"/>
+    <link rel="stylesheet" type="text/css" href="main.css"/>
+
 
     <script type="text/javascript" src="dependencies/jquery-3.1.0.min.js"></script>
     <script type="text/javascript" src="dependencies/jquery-ui.min.js"></script>
+    <script src="dependencies/modal.js" type="text/javascript"></script>
     <script type="text/javascript" src="dependencies/three.js"></script>
     <script type="text/javascript" src="dependencies/underscore-min.js"></script>
 
     <script type="text/javascript" src="js/threeView.js"></script>
     <script type="text/javascript" src="js/solveGeo.js"></script>
+    <script type="text/javascript" src="js/graphicStatics.js"></script>
     <script type="text/javascript" src="js/plot.js"></script>
     <script type="text/javascript" src="js/node.js"></script>
     <script type="text/javascript" src="js/beam.js"></script>
@@ -44,8 +48,10 @@
 </div>
 
 <div id="controls">
+    <a id="aboutModal" href="#">About</a><br/>
     gamma: <span id="gamma"></span><br/><br/>
     <span class="label">n : </span><div id="n" class="flat-slider ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"></div><br/>
 </div>
+<div id="moreInfo"></div>
 </body>
 </html>

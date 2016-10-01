@@ -43,6 +43,12 @@ img{
     text-align: right;
 }
 
+#moreInfo{
+    display: none;
+    position: absolute;
+    z-index: 10;
+}
+
 .label{
     margin-right: 10px;
 }
@@ -180,4 +186,12 @@ filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
     position: relative;
     margin: 10px 0 10px 0;
     /*padding: 4px 0;*/
+}
+
+.modal-wrapper{
+    border-radius: 0;
+}
+
+span.modal-close{
+    display: none;
 }

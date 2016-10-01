@@ -7,7 +7,7 @@ var displayNodes = [];
 var displayBeams = [];
 
 
-var dashedLineMaterial = new THREE.LineDashedMaterial({color:0x222222, dashSize:10, gapSize:10, linewidth:3});
+var dashedLineMaterial = new THREE.LineDashedMaterial({color:0xebebeb, dashSize:10, gapSize:10, linewidth:3});
 
 
 var minLengthLineGeo = new THREE.Geometry();
@@ -24,8 +24,8 @@ var maxLengthLine = new THREE.Line(maxLengthLineGeo, dashedLineMaterial);
 scene.add(maxLengthLine);
 var lengthLine = new THREE.Object3D();
 scene.add(lengthLine);
-lengthLine.add(new THREE.ArrowHelper( new THREE.Vector3(1,0,0), new THREE.Vector3(0,0,0), 1, 0x000000));
-lengthLine.add(new THREE.ArrowHelper( new THREE.Vector3(-1,0,0), new THREE.Vector3(0,0,0), 1, 0x000000));
+lengthLine.add(new THREE.ArrowHelper( new THREE.Vector3(1,0,0), new THREE.Vector3(0,0,0), 1, 0xc1c1c1));
+lengthLine.add(new THREE.ArrowHelper( new THREE.Vector3(-1,0,0), new THREE.Vector3(0,0,0), 1, 0xc1c1c1));
 lengthLine.children[0].line.material.linewidth = 2;
 lengthLine.children[1].line.material.linewidth = 2;
 
@@ -43,8 +43,8 @@ var maxH = new THREE.Line(maxHGeo, dashedLineMaterial);
 scene.add(maxH);
 var hLength = new THREE.Object3D();
 scene.add(hLength);
-hLength.add(new THREE.ArrowHelper( new THREE.Vector3(0,1,0), new THREE.Vector3(0,0,0), 1, 0x000000));
-hLength.add(new THREE.ArrowHelper( new THREE.Vector3(0,-1,0), new THREE.Vector3(0,0,0), 1, 0x000000));
+hLength.add(new THREE.ArrowHelper( new THREE.Vector3(0,1,0), new THREE.Vector3(0,0,0), 1, 0xc1c1c1));
+hLength.add(new THREE.ArrowHelper( new THREE.Vector3(0,-1,0), new THREE.Vector3(0,0,0), 1, 0xc1c1c1));
 hLength.children[0].line.material.linewidth = 2;
 hLength.children[1].line.material.linewidth = 2;
 
@@ -79,7 +79,11 @@ function plotNodes(nodes, n, h){
     var lastLayerNodes = [];
     var lastLayerNodesMirror = [];
 
+    var calcBeamsArray = [];
+
     for (var i=0;i<n;i++){//for each layer
+
+        calcBeamsArray.push([]);
 
         var layerVertices = nodes[i];
 
@@ -87,17 +91,24 @@ function plotNodes(nodes, n, h){
         var lastNodeMirror = supportMirror;
 
         for (var j=0;j<layerVertices.length;j++){//for each node on each layer
+
+            calcBeamsArray[i].push([]);
+
             var nextNode = new Node(layerVertices[j]);
             displayNodes.push(nextNode);
-            new Beam([lastNode.getPosition(), nextNode.getPosition()]);
+            var beam1 = new Beam([lastNode.getPosition(), nextNode.getPosition()]);
+            displayBeams.push(beam1);
+            calcBeamsArray[i][j].push(beam1);
 
             var nextNodeMirror = new Node(layerVertices[j], true);
             displayNodes.push(nextNodeMirror);
-            new Beam([lastNodeMirror.getPosition(), nextNodeMirror.getPosition()]);
+            displayBeams.push(new Beam([lastNodeMirror.getPosition(), nextNodeMirror.getPosition()]));
 
             if (i>0 && lastLayerNodes.length>j) {
-                new Beam([lastLayerNodes[j].getPosition(), nextNode.getPosition()]);
-                new Beam([lastLayerNodesMirror[j].getPosition(), nextNodeMirror.getPosition()]);
+                var beam2 = new Beam([lastLayerNodes[j].getPosition(), nextNode.getPosition()]);
+                displayBeams.push(beam2);
+                calcBeamsArray[i][j].push(beam2);
+                displayBeams.push(new Beam([lastLayerNodesMirror[j].getPosition(), nextNodeMirror.getPosition()]));
             }
 
             if (lastLayerNodes.length>j) lastLayerNodes[j] = nextNode;
@@ -120,6 +131,14 @@ function plotNodes(nodes, n, h){
             lastNodeMirror = nextNodeMirror;
         }
     }
+
+    //colors
+    var forces = solveForces(calcBeamsArray, nodes, new THREE.Vector3(0,3,0));
+    var maxForce = _.max(forces);
+    var minForce = _.min(forces);
+    _.each(displayBeams, function(beam, i){
+        beam.setForce(forces[i], maxForce, minForce);
+    });
 
     height *= 2;
 
