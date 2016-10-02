@@ -30,12 +30,12 @@ function binarySearchMichell(gamma, stepSize, h, n, desiredLength){
 
 function calcMichell(gamma, h, n){
 
-    var nodes = [];
+    var nodes = [[new THREE.Vector3(0, h/2, 0)]];//supot vector
 
     var lastLayer = [new THREE.Vector3(h/(2*Math.tan(gamma/2)), 0, 0)];
     nodes.push(lastLayer);
 
-    var supportVect = new THREE.Vector3(0, h/2, 0);
+    var supportVect = nodes[0][0];
 
     for (var layer=2;layer<=n;layer++){
 

@@ -63,20 +63,20 @@ $(function() {
         }
         setUI();
         _nodes = solveMichell(_h, _L, _n);
-        plotNodes(_nodes, _n, _h);
+        updateNodes(_nodes);
     });
 
     LSlider.on("slide", function(){
         _L = LSlider.slider('value');
         setUI();
         _nodes = solveMichell(_h, _L, _n);
-        plotNodes(_nodes, _n, _h);
+        updateNodes(_nodes);
     });
 
     nSlider.on("slide", function(){
         _n = nSlider.slider('value');
         _nodes = solveMichell(_h, _L, _n);
-        plotNodes(_nodes, _n, _h);
+        plotNodes(_nodes, _n);//must recalc connectivity
     });
 
     $("#logo").mouseenter(function(){

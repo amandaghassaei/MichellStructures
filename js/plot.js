@@ -48,15 +48,21 @@ hLength.add(new THREE.ArrowHelper( new THREE.Vector3(0,-1,0), new THREE.Vector3(
 hLength.children[0].line.material.linewidth = 2;
 hLength.children[1].line.material.linewidth = 2;
 
+
 //var layersObj = new THREE.Object3D();
 
+function updateNodes(nodes){
 
+    _.each(displayNodes, function(node){
+        node.move(nodes[(node.getIndex()[0])][(node.getIndex())[1]]);
+    });
 
-function plotNodes(nodes, n, h){
+    doOtherStuff(nodes);
 
-    var widthMin = 0;
-    var widthMax = 0;
-    var height = 0;
+    render();
+}
+
+function plotNodes(nodes, n){
 
     sceneClear();
 
@@ -69,46 +75,37 @@ function plotNodes(nodes, n, h){
     displayNodes = [];
     displayBeams = [];
 
-    var supportVect = new THREE.Vector3(0, h/2, 0);
-
-    var support = new Node(supportVect);
-    var supportMirror = new Node(supportVect, true);
+    var support = new Node(nodes[0][0], [0,0]);
     displayNodes.push(support);
+    var supportMirror = new Node(nodes[0][0], [0,0], true);
     displayNodes.push(supportMirror);
 
     var lastLayerNodes = [];
     var lastLayerNodesMirror = [];
 
-    var calcBeamsArray = [];
 
     for (var i=0;i<n;i++){//for each layer
 
-        calcBeamsArray.push([]);
-
-        var layerVertices = nodes[i];
+        var layerVertices = nodes[i+1];
 
         var lastNode = support;
         var lastNodeMirror = supportMirror;
 
         for (var j=0;j<layerVertices.length;j++){//for each node on each layer
 
-            calcBeamsArray[i].push([]);
-
-            var nextNode = new Node(layerVertices[j]);
+            var nextNode = new Node(layerVertices[j], [i+1,j]);
             displayNodes.push(nextNode);
-            var beam1 = new Beam([lastNode.getPosition(), nextNode.getPosition()]);
+            var beam1 = new Beam([lastNode, nextNode]);
             displayBeams.push(beam1);
-            calcBeamsArray[i][j].push(beam1);
 
-            var nextNodeMirror = new Node(layerVertices[j], true);
+            var nextNodeMirror = new Node(layerVertices[j], [i+1,j], true);
             displayNodes.push(nextNodeMirror);
-            displayBeams.push(new Beam([lastNodeMirror.getPosition(), nextNodeMirror.getPosition()]));
+            displayBeams.push(new Beam([lastNodeMirror, nextNodeMirror]));
 
             if (i>0 && lastLayerNodes.length>j) {
-                var beam2 = new Beam([lastLayerNodes[j].getPosition(), nextNode.getPosition()]);
+                var beam2 = new Beam([lastLayerNodes[j], nextNode]);
                 displayBeams.push(beam2);
-                calcBeamsArray[i][j].push(beam2);
-                displayBeams.push(new Beam([lastLayerNodesMirror[j].getPosition(), nextNodeMirror.getPosition()]));
+                displayBeams.push(new Beam([lastLayerNodesMirror[j], nextNodeMirror]));
             }
 
             if (lastLayerNodes.length>j) lastLayerNodes[j] = nextNode;
@@ -116,31 +113,32 @@ function plotNodes(nodes, n, h){
             if (lastLayerNodesMirror.length>j) lastLayerNodesMirror[j] = nextNodeMirror;
             else lastLayerNodesMirror.push(nextNodeMirror);
 
-            var nextNodePosition = nextNode.getPosition();
-            if (nextNodePosition.x > widthMax){
-                widthMax = nextNodePosition.x;
-            }
-            if (nextNodePosition.x < widthMin){
-                widthMin = nextNodePosition.x;
-            }
-            if (nextNodePosition.y > height){
-                height = nextNodePosition.y;
-            }
-
             lastNode = nextNode;
             lastNodeMirror = nextNodeMirror;
         }
     }
 
-    //colors
-    var forces = solveForces(calcBeamsArray, nodes, new THREE.Vector3(0,3,0));
-    var maxForce = _.max(forces);
-    var minForce = _.min(forces);
-    _.each(displayBeams, function(beam, i){
-        beam.setForce(forces[i], maxForce, minForce);
-    });
+    doOtherStuff(nodes);
 
-    height *= 2;
+    render();
+}
+
+function doOtherStuff(nodes){
+
+    var widthMax = 0;
+    for (var i=1;i<nodes.length;i++){
+        for (var j=0;j<nodes[i].length;j++){
+            if (nodes[i][j].x>widthMax) widthMax = nodes[i][j].x;
+        }
+    }
+
+    //colors
+    //var forces = solveForces(calcBeamsArray, nodes, new THREE.Vector3(0,3,0));
+    //var maxForce = _.max(forces);
+    //var minForce = _.min(forces);
+    //_.each(displayBeams, function(beam, i){
+    //    beam.setForce(forces[i], maxForce, minForce);
+    //});
 
     //calculate scaling
     var padding = 130;
@@ -177,6 +175,4 @@ function plotNodes(nodes, n, h){
 
     lengthLine.position.set(0,lineLengthY*scale,0);
     hLength.position.x += hLengthX*scale;
-
-    render();
 }

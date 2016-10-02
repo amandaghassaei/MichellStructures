@@ -7,7 +7,7 @@ function solveForces(beams, nodes, appliedForce){
     var forces = [];
 
     var currentForce = appliedForce.clone().multiplyScalar(0.5);
-    for (var i=nodes.length-1;i>=0;i--){//outer layer inward
+    for (var i=nodes.length-1;i>=1;i--){//outer layer inward
         var layerNodes = nodes[i];
         for (var j=layerNodes.length-1;j>=0;j--){
             var node = layerNodes[j];

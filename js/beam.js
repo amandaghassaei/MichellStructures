@@ -7,21 +7,21 @@
 
 function Beam(nodes){
 
+    nodes[0].addBeam(this);
+    nodes[1].addBeam(this);
+    this.vertices = [nodes[0].getPosition(), nodes[1].getPosition()];
+
     var lineGeometry = new THREE.Geometry();
-    lineGeometry.vertices = nodes;
+    lineGeometry.dynamic = true;
+    lineGeometry.vertices = this.vertices;
     var material = new THREE.LineBasicMaterial({color: 0x0000ff, linewidth: 3});
 
-    this.vertices = nodes;
     this.object3D = new THREE.Line(lineGeometry, material);
     this.object3D._myBeam = this;
     sceneAdd(this.object3D);
 }
 
 Beam.prototype.highlight = function(){
-
-
-
-    //this.line.geometryNeed = true;
 };
 
 Beam.prototype.unhighlight = function(){
@@ -48,6 +48,10 @@ Beam.prototype.getForce = function(){
 
 Beam.prototype.getLength = function(){
     return this.vertices[0].clone().sub(this.vertices[1]).length();
+};
+
+Beam.prototype.updatePosition = function(){
+    this.object3D.geometry.verticesNeedUpdate = true;
 };
 
 Beam.prototype.destroy = function(){
