@@ -9,7 +9,7 @@ $(function() {
 
     window.addEventListener('resize', function(){
         onWindowResizeThree();
-        if (_nodes) updateNodes(_nodes, _h);
+        if (_nodes) updateNodes(_nodes, _h, _viewMode);
     }, false);
 
     var $moreInfo = $("#moreInfo");
@@ -18,6 +18,8 @@ $(function() {
     var _L = 1000;
     var _n = 5;
     var _P = new THREE.Vector3(0,0,0);
+
+    var _viewMode = "none";
 
     setUI();
 
@@ -63,20 +65,20 @@ $(function() {
         }
         setUI();
         _nodes = solveMichell(_h, _L, _n);
-        updateNodes(_nodes, _h);
+        updateNodes(_nodes, _h, _viewMode);
     });
 
     LSlider.on("slide", function(){
         _L = LSlider.slider('value');
         setUI();
         _nodes = solveMichell(_h, _L, _n);
-        updateNodes(_nodes, _h);
+        updateNodes(_nodes, _h, _viewMode);
     });
 
     nSlider.on("slide", function(){
         _n = nSlider.slider('value');
         _nodes = solveMichell(_h, _L, _n);
-        plotNodes(_nodes, _n, _h);//must recalc connectivity
+        plotNodes(_nodes, _n, _h, _viewMode);//must recalc connectivity
     });
 
     $("#logo").mouseenter(function(){
@@ -84,6 +86,13 @@ $(function() {
     });
     $("#logo").mouseleave(function(){
         $("#activeLogo").hide();
+    });
+
+    $("input[value="+_viewMode+"]").prop("checked", true);
+    $('input[name=viewMode]').on('change', function() {
+        _viewMode = $('input[name=viewMode]:checked').val();
+        colorBeams(_viewMode);
+        render();
     });
 
     var $modal = $('body').modal();
@@ -116,9 +125,17 @@ $(function() {
             });
         }
         if (highlightedObj){
-            $moreInfo.html(highlightedObj.getForce().toFixed(2));
-            $moreInfo.css({top:e.clientY-25, left:e.clientX});
-            $moreInfo.show();
+            if (_viewMode == "none"){
+
+            } else {
+                var val = "";
+                if (_viewMode == "length"){
+                    val = "Length: " + highlightedObj.getLength().toFixed(2);
+                }
+                $moreInfo.html(val);
+                $moreInfo.css({top:e.clientY-25, left:e.clientX});
+                $moreInfo.show();
+            }
         } else {
             _.each(displayBeams, function(beam){
                 beam.unhighlight();
@@ -129,7 +146,7 @@ $(function() {
     }
 
     var _nodes = solveMichell(_h, _L, _n);
-    plotNodes(_nodes, _n, _h);
+    plotNodes(_nodes, _n, _h, _viewMode);
 
 
 });

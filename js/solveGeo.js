@@ -9,7 +9,7 @@ function solveMichell(h, L, n) {//L = length, layers = number of layers
         return [];
     }
     if (n==1){
-        return [[new THREE.Vector3(L,0,0)]];
+        return [[new THREE.Vector3(0, h/2, 0)], [new THREE.Vector3(L,0,0)]];
     }
     var gamma = Math.PI/4;//gamma between 0.01 and Math.PI/2-0.01
     return binarySearchMichell(gamma, Math.PI/8, h, n, L);
@@ -30,7 +30,7 @@ function binarySearchMichell(gamma, stepSize, h, n, desiredLength){
 
 function calcMichell(gamma, h, n){
 
-    var nodes = [[new THREE.Vector3(0, h/2, 0)]];//supot vector
+    var nodes = [[new THREE.Vector3(0, h/2, 0)]];//support vector
 
     var lastLayer = [new THREE.Vector3(h/(2*Math.tan(gamma/2)), 0, 0)];
     nodes.push(lastLayer);

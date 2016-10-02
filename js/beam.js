@@ -4,6 +4,7 @@
 
 //var beamMaterial = new THREE.LineBasicMaterial({color: 0x0000ff, linewidth: 3});
 
+var defaultColor = 0x0000ff;
 
 function Beam(nodes){
 
@@ -14,11 +15,13 @@ function Beam(nodes){
     var lineGeometry = new THREE.Geometry();
     lineGeometry.dynamic = true;
     lineGeometry.vertices = this.vertices;
-    var material = new THREE.LineBasicMaterial({color: 0x0000ff, linewidth: 3});
+    var material = new THREE.LineBasicMaterial({color: defaultColor, linewidth: 3});
 
     this.object3D = new THREE.Line(lineGeometry, material);
     this.object3D._myBeam = this;
     sceneAdd(this.object3D);
+
+    this.reset();
 }
 
 Beam.prototype.highlight = function(){
@@ -34,16 +37,31 @@ Beam.prototype.getAngle = function(fromNode){
     return Math.atan2(node2.y-fromNode.y, node2.x-fromNode.x);
 };
 
-Beam.prototype.setForce = function(force, max, min){
-    this.force = force;
-    //var scaledVal = (1-(force - min)/(max - min)) * 0.7;
-    //var color = new THREE.Color();
-    //color.setHSL(scaledVal, 1, 0.5);
-    //this.object3D.material.color.set(color);
+Beam.prototype.setColor = function(val, max, min){
+    var scaledVal = (1-(val - min)/(max - min)) * 0.7;
+    var color = new THREE.Color();
+    color.setHSL(scaledVal, 1, 0.5);
+    this.object3D.material.color.set(color);
+};
+
+Beam.prototype.setDefaultColor = function(){
+    this.object3D.material.color.setHex(defaultColor);
+};
+
+Beam.prototype.reset = function(){
+    this.force = null;
+};
+
+Beam.prototype.setForce = function(forceMag, angle){
+    this.force = new THREE.Vector3(forceMag*Math.cos(angle), forceMag*Math.sin(angle), 0);
 };
 
 Beam.prototype.getForce = function(){
     return this.force;
+};
+
+Beam.prototype.getForceMagnitude = function(){
+    return this.force.length();
 };
 
 Beam.prototype.getLength = function(){

@@ -6,9 +6,9 @@
 var displayNodes = [];
 var displayBeams = [];
 
+var forces = [new Force(new THREE.Vector3(0,-20,0))];
 
 var dashedLineMaterial = new THREE.LineDashedMaterial({color:0xebebeb, dashSize:10, gapSize:10, linewidth:3});
-
 
 var minLengthLineGeo = new THREE.Geometry();
 minLengthLineGeo.vertices.push(new THREE.Vector3());
@@ -48,21 +48,23 @@ hLength.add(new THREE.ArrowHelper( new THREE.Vector3(0,-1,0), new THREE.Vector3(
 hLength.children[0].line.material.linewidth = 2;
 hLength.children[1].line.material.linewidth = 2;
 
+var moj = MethodOfJoints();
+
 
 //var layersObj = new THREE.Object3D();
 
-function updateNodes(nodes, h){
+function updateNodes(nodes, h, viewMode){
 
     _.each(displayNodes, function(node){
         node.move(nodes[node.getIndex()[0]][node.getIndex()[1]]);
     });
 
-    doOtherStuff(nodes, h);
+    doOtherStuff(nodes, h, viewMode);
 
     render();
 }
 
-function plotNodes(nodes, n, h){
+function plotNodes(nodes, n, h, viewMode){
 
     sceneClear();
 
@@ -76,13 +78,14 @@ function plotNodes(nodes, n, h){
     displayBeams = [];
 
     var support = new Node(nodes[0][0], [0,0]);
+    support.setFixed(true);
     displayNodes.push(support);
     var supportMirror = new Node(nodes[0][0], [0,0], true);
+    supportMirror.setFixed(true);
     displayNodes.push(supportMirror);
 
     var lastLayerNodes = [];
     var lastLayerNodesMirror = [];
-
 
     for (var i=0;i<n;i++){//for each layer
 
@@ -98,8 +101,13 @@ function plotNodes(nodes, n, h){
             var beam1 = new Beam([lastNode, nextNode]);
             displayBeams.push(beam1);
 
-            var nextNodeMirror = new Node(layerVertices[j], [i+1,j], true);
-            displayNodes.push(nextNodeMirror);
+            var nextNodeMirror = nextNode;
+            if (j<layerVertices.length-1){
+                nextNodeMirror = new Node(layerVertices[j], [i+1,j], true);
+                displayNodes.push(nextNodeMirror);
+            } else if (i==n-1) {//apex node
+                nextNode.addExternalForce(forces[0]);
+            }
             displayBeams.push(new Beam([lastNodeMirror, nextNodeMirror]));
 
             if (i>0 && lastLayerNodes.length>j) {
@@ -118,12 +126,45 @@ function plotNodes(nodes, n, h){
         }
     }
 
-    doOtherStuff(nodes, h);
+    doOtherStuff(nodes, h, viewMode);
 
     render();
 }
 
-function doOtherStuff(nodes, h){
+function colorBeams(viewMode){
+    //colors
+    if (viewMode == "force"){
+        moj.solveForces(displayNodes);
+
+        var forces = [];
+        _.each(displayBeams, function(beam){
+            forces.push(beam.getForceMagnitude());
+        });
+        var max = _.max(forces);
+        var min = _.min(forces);
+        _.each(displayBeams, function(beam, i){
+            beam.setColor(forces[i], max, min);
+        });
+
+    } else if (viewMode == "length"){
+        var lengths = [];
+        _.each(displayBeams, function(beam){
+            lengths.push(beam.getLength());
+        });
+        var max = _.max(lengths);
+        var min = _.min(lengths);
+        _.each(displayBeams, function(beam, i){
+            beam.setColor(lengths[i], max, min);
+        });
+    } else {
+        //none
+        _.each(displayBeams, function(beam){
+            beam.setDefaultColor();
+        });
+    }
+}
+
+function doOtherStuff(nodes, h, viewMode){
 
     var widthMax = 0;
     for (var i=1;i<nodes.length;i++){
@@ -132,13 +173,7 @@ function doOtherStuff(nodes, h){
         }
     }
 
-    //colors
-    //var forces = solveForces(calcBeamsArray, nodes, new THREE.Vector3(0,3,0));
-    //var maxForce = _.max(forces);
-    //var minForce = _.min(forces);
-    //_.each(displayBeams, function(beam, i){
-    //    beam.setForce(forces[i], maxForce, minForce);
-    //});
+    colorBeams(viewMode);
 
     //calculate scaling
     var padding = 130;
