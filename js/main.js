@@ -95,13 +95,13 @@ $(function() {
         updateNodes(_nodes, _h, _viewMode);
     });
 
-    nSlider.on("slide", function(){
+    setSliderInput(nSlider, "nInput", function(){
         _n = nSlider.slider('value');
         _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
         plotNodes(_nodes, _n, _h, _viewMode);//must recalc connectivity
     });
 
-    xScaleSlider.on("slide", function(){
+    setSliderInput(xScaleSlider, "xScaleInput", function(){
         _scaleX = xScaleSlider.slider('value');
         if (_scaleX != _scaleY) $("#gammaDisplay").hide();
         else $("#gammaDisplay").show();
@@ -109,13 +109,14 @@ $(function() {
         updateNodes(_nodes, _h, _viewMode);
     });
 
-    yScaleSlider.on("slide", function(){
+    setSliderInput(yScaleSlider, "yScaleInput", function(){
         _scaleY = yScaleSlider.slider('value');
-        if (_scaleX != _scaleY) $("#gammaDisplay").hide();
+       if (_scaleX != _scaleY) $("#gammaDisplay").hide();
         else $("#gammaDisplay").show();
         _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
         updateNodes(_nodes, _h, _viewMode);
     });
+
 
     $("#logo").mouseenter(function(){
         $("#activeLogo").show();
@@ -192,3 +193,29 @@ $(function() {
 
 
 });
+
+function setSliderInput(sliderEl, id, callback){
+    var $input = $("#" + id);
+    $("input#" + id).change(function(){
+        //sliderEl.slide();
+        var val = $input.val();
+        if ($input.hasClass("int")){
+            if (isNaN(parseInt(val))) return;
+            val = parseInt(val);
+        } else {
+            if (isNaN(parseFloat(val))) return;
+            val = parseFloat(val);
+        }
+
+        var min = sliderEl.slider("option", "min");
+        if (val <= 0) val = min;
+        $input.val(val);
+        sliderEl.slider('value', val);
+        callback();
+    });
+    $input.val(sliderEl.slider('value'));
+    sliderEl.on("slide", function(){
+        $input.val(sliderEl.slider('value'));
+        callback();
+    });
+}

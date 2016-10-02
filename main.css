@@ -43,6 +43,19 @@ img{
     text-align: right;
 }
 
+#controls>.flat-slider{
+    width: 100px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+#controls>input.form-control{
+    width: 90px;
+    display: inline-block;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
 #aboutModal{
     margin-bottom: 15px;
 }
@@ -77,6 +90,8 @@ img{
     /*margin: 0 auto;*/
     position: absolute;
     bottom:0;
+    padding-right: 330px;
+    padding-left: 110px;
 }
 
 #hControl{
