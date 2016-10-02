@@ -137,11 +137,9 @@ function colorBeams(viewMode){
         moj.solveForces(displayNodes);
         var forces = [];
         _.each(displayBeams, function(beam){
-            forces.push(beam.getTensionCompressionForce());
+            forces.push(beam.getForceMagnitude());
         });
         var max = _.max(forces);
-        var min = _.min(forces);
-        if (Math.abs(min) > max) max = Math.abs(min);
         _.each(displayBeams, function(beam, i){
             beam.setTensionCompressionColor(forces[i], max);
         });

@@ -133,6 +133,10 @@ $(function() {
                     val = "Length: " + highlightedObj.getLength().toFixed(2);
                 } else if (_viewMode == "force"){
                     val = "Force: " + highlightedObj.getForceMagnitude().toFixed(2);
+                } else if (_viewMode == "tension-compression"){
+                    var force = highlightedObj.getForceMagnitude();
+                    if (highlightedObj.isInCompression()) val = "Compression: " + Math.abs(force).toFixed(2);
+                    else val = "Tension: " + Math.abs(force).toFixed(2);
                 }
                 $moreInfo.html(val);
                 $moreInfo.css({top:e.clientY-25, left:e.clientX});

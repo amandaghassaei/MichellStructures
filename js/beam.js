@@ -45,8 +45,8 @@ Beam.prototype.setColor = function(val, max, min){
 };
 
 Beam.prototype.setTensionCompressionColor = function(val, max){
-    var scaledVal = Math.abs(val)/max;
-    if (val<0){
+    var scaledVal = val/max;
+    if (this.isInCompression()){
         this.object3D.material.color.setRGB(scaledVal, 0, 0);
     } else {
         this.object3D.material.color.setRGB(0, 0, scaledVal);
@@ -58,7 +58,7 @@ Beam.prototype.setDefaultColor = function(){
 };
 
 Beam.prototype.reset = function(){
-    this.inCompression = true;
+    this.inCompression = false;
     this.force = null;
 };
 
@@ -69,17 +69,15 @@ Beam.prototype.setForce = function(forceMag, angle){
 
 Beam.prototype.getForce = function(){
     if (this.force == null) return null;
-    if (this.inCompression) return this.force.clone().multiplyScalar(-1);
-    return this.force.clone();
+    return this.force.clone().multiplyScalar(-1);
 };
 
 Beam.prototype.getForceMagnitude = function(){
     return this.force.length();
 };
 
-Beam.prototype.getTensionCompressionForce = function(){
-    if (this.inCompression) return this.getForceMagnitude()*-1;
-    return this.getForceMagnitude();
+Beam.prototype.isInCompression = function(){
+    return this.inCompression;
 };
 
 Beam.prototype.getLength = function(){
