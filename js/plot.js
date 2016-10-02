@@ -188,10 +188,12 @@ function doOtherStuff(nodes, h, viewMode){
     minLengthLineGeo.vertices[0].set(0, -h/2, 0);
     minLengthLineGeo.vertices[1].set(0, lineLengthY, 0);
     minLengthLineGeo.verticesNeedUpdate = true;
+    minLengthLineGeo.computeBoundingSphere();
     minLengthLineGeo.computeLineDistances();
     maxLengthLineGeo.vertices[0].set(widthMax, 0, 0);
     maxLengthLineGeo.vertices[1].set(widthMax, lineLengthY, 0);
     maxLengthLineGeo.verticesNeedUpdate = true;
+    maxLengthLineGeo.computeBoundingSphere();
     maxLengthLineGeo.computeLineDistances();
 
     var hLengthX = -30/scale;
@@ -200,10 +202,12 @@ function doOtherStuff(nodes, h, viewMode){
     minHGeo.vertices[0].set(0, -h/2, 0);
     minHGeo.vertices[1].set(hLengthX, -h/2, 0);
     minHGeo.verticesNeedUpdate = true;
+    minHGeo.computeBoundingSphere();
     minHGeo.computeLineDistances();
     maxHGeo.vertices[0].set(0, h/2, 0);
     maxHGeo.vertices[1].set(hLengthX, h/2, 0);
     maxHGeo.verticesNeedUpdate = true;
+    maxHGeo.computeBoundingSphere();
     maxHGeo.computeLineDistances();
 
     setScale(scale, widthMax*scale);

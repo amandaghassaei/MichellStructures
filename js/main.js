@@ -131,6 +131,8 @@ $(function() {
                 var val = "";
                 if (_viewMode == "length"){
                     val = "Length: " + highlightedObj.getLength().toFixed(2);
+                } else if (_viewMode == "force"){
+                    val = "Force: " + highlightedObj.getForceMagnitude().toFixed(2);
                 }
                 $moreInfo.html(val);
                 $moreInfo.css({top:e.clientY-25, left:e.clientX});
