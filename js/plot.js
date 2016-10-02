@@ -133,7 +133,20 @@ function plotNodes(nodes, n, h, viewMode){
 
 function colorBeams(viewMode){
     //colors
-    if (viewMode == "force"){
+    if (viewMode == "tension-compression"){
+        moj.solveForces(displayNodes);
+        var forces = [];
+        _.each(displayBeams, function(beam){
+            forces.push(beam.getTensionCompressionForce());
+        });
+        var max = _.max(forces);
+        var min = _.min(forces);
+        if (Math.abs(min) > max) max = Math.abs(min);
+        _.each(displayBeams, function(beam, i){
+            beam.setTensionCompressionColor(forces[i], max);
+        });
+
+    } else if (viewMode == "force"){
         moj.solveForces(displayNodes);
 
         var forces = [];

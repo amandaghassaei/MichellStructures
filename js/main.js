@@ -19,7 +19,7 @@ $(function() {
     var _n = 5;
     var _P = new THREE.Vector3(0,0,0);
 
-    var _viewMode = "none";
+    var _viewMode = "force";
 
     setUI();
 
