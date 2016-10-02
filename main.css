@@ -56,6 +56,10 @@ img{
     margin-top: 5px;
 }
 
+.form-control:focus{
+    border-color: #6dd0f2;
+}
+
 #aboutModal{
     margin-bottom: 15px;
 }
