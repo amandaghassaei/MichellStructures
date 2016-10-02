@@ -84,21 +84,37 @@ $(function() {
             _L = _h+1;//prevent unsolvable system
         }
         setUI();
-        _nodes = solveMichell(_h, _L, _n);
+        _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
         updateNodes(_nodes, _h, _viewMode);
     });
 
     LSlider.on("slide", function(){
         _L = LSlider.slider('value');
         setUI();
-        _nodes = solveMichell(_h, _L, _n);
+        _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
         updateNodes(_nodes, _h, _viewMode);
     });
 
     nSlider.on("slide", function(){
         _n = nSlider.slider('value');
-        _nodes = solveMichell(_h, _L, _n);
+        _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
         plotNodes(_nodes, _n, _h, _viewMode);//must recalc connectivity
+    });
+
+    xScaleSlider.on("slide", function(){
+        _scaleX = xScaleSlider.slider('value');
+        if (_scaleX != _scaleY) $("#gammaDisplay").hide();
+        else $("#gammaDisplay").show();
+        _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
+        updateNodes(_nodes, _h, _viewMode);
+    });
+
+    yScaleSlider.on("slide", function(){
+        _scaleY = yScaleSlider.slider('value');
+        if (_scaleX != _scaleY) $("#gammaDisplay").hide();
+        else $("#gammaDisplay").show();
+        _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
+        updateNodes(_nodes, _h, _viewMode);
     });
 
     $("#logo").mouseenter(function(){
@@ -171,7 +187,7 @@ $(function() {
         render();
     }
 
-    var _nodes = solveMichell(_h, _L, _n);
+    var _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
     plotNodes(_nodes, _n, _h, _viewMode);
 
 
