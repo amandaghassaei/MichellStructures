@@ -13,7 +13,7 @@ function Node(position, index, mirror){
         this.mirror = true;
     }
     this.object3D = new THREE.Mesh(nodeGeometry, nodeMaterial);
-    this.object3D.visible = false;
+    //this.object3D.visible = false;
     this.object3D.position.set(position.x, position.y, position.z);
     sceneAdd(this.object3D);
     this.beams = [];

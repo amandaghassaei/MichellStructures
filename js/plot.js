@@ -51,18 +51,18 @@ hLength.children[1].line.material.linewidth = 2;
 
 //var layersObj = new THREE.Object3D();
 
-function updateNodes(nodes){
+function updateNodes(nodes, h){
 
     _.each(displayNodes, function(node){
-        node.move(nodes[(node.getIndex()[0])][(node.getIndex())[1]]);
+        node.move(nodes[node.getIndex()[0]][node.getIndex()[1]]);
     });
 
-    doOtherStuff(nodes);
+    doOtherStuff(nodes, h);
 
     render();
 }
 
-function plotNodes(nodes, n){
+function plotNodes(nodes, n, h){
 
     sceneClear();
 
@@ -118,12 +118,12 @@ function plotNodes(nodes, n){
         }
     }
 
-    doOtherStuff(nodes);
+    doOtherStuff(nodes, h);
 
     render();
 }
 
-function doOtherStuff(nodes){
+function doOtherStuff(nodes, h){
 
     var widthMax = 0;
     for (var i=1;i<nodes.length;i++){

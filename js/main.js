@@ -9,7 +9,7 @@ $(function() {
 
     window.addEventListener('resize', function(){
         onWindowResizeThree();
-        if (_nodes) plotNodes(_nodes, _n, _h);
+        if (_nodes) updateNodes(_nodes, _h);
     }, false);
 
     var $moreInfo = $("#moreInfo");
@@ -63,20 +63,20 @@ $(function() {
         }
         setUI();
         _nodes = solveMichell(_h, _L, _n);
-        updateNodes(_nodes);
+        updateNodes(_nodes, _h);
     });
 
     LSlider.on("slide", function(){
         _L = LSlider.slider('value');
         setUI();
         _nodes = solveMichell(_h, _L, _n);
-        updateNodes(_nodes);
+        updateNodes(_nodes, _h);
     });
 
     nSlider.on("slide", function(){
         _n = nSlider.slider('value');
         _nodes = solveMichell(_h, _L, _n);
-        plotNodes(_nodes, _n);//must recalc connectivity
+        plotNodes(_nodes, _n, _h);//must recalc connectivity
     });
 
     $("#logo").mouseenter(function(){

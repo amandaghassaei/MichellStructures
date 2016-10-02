@@ -36,10 +36,10 @@ Beam.prototype.getAngle = function(fromNode){
 
 Beam.prototype.setForce = function(force, max, min){
     this.force = force;
-    var scaledVal = (1-(force - min)/(max - min)) * 0.7;
-    var color = new THREE.Color();
-    color.setHSL(scaledVal, 1, 0.5);
-    this.object3D.material.color.set(color);
+    //var scaledVal = (1-(force - min)/(max - min)) * 0.7;
+    //var color = new THREE.Color();
+    //color.setHSL(scaledVal, 1, 0.5);
+    //this.object3D.material.color.set(color);
 };
 
 Beam.prototype.getForce = function(){
@@ -52,9 +52,14 @@ Beam.prototype.getLength = function(){
 
 Beam.prototype.updatePosition = function(){
     this.object3D.geometry.verticesNeedUpdate = true;
+    //this.object3D.geometry.normalsNeedUpdate = true;
+    //this.object3D.geometry.computeFaceNormals();
+    //this.object3D.geometry.computeVertexNormals();
+    this.object3D.geometry.computeBoundingSphere();
 };
 
 Beam.prototype.destroy = function(){
     this.vertices = null;
+    this.object3D._myBeam = null;
     this.object3D = null;
 };
