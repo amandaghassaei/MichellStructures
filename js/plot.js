@@ -187,8 +187,10 @@ function doOtherStuff(nodes, h, viewMode){
     colorBeams(viewMode);
 
     //calculate scaling
-    var padding = 130;
-    var scale = (window.innerWidth-2*padding)/widthMax;
+    var paddingLeft = $('#controls').width()+50;
+    var paddingRight = 130;
+    var scale = (window.innerWidth-(paddingLeft+paddingRight))/widthMax;
+    scene.position.set((paddingRight-paddingLeft)/2,0,0);
 
     var arrowScale = 100;
     var lineLengthY = -(window.innerHeight/2-80)/scale;

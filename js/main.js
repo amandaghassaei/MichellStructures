@@ -130,13 +130,13 @@ $(function() {
             } else {
                 var val = "";
                 if (_viewMode == "length"){
-                    val = "Length: " + highlightedObj.getLength().toFixed(2);
+                    val = "Length: " + highlightedObj.getLength().toFixed(2) + " m";
                 } else if (_viewMode == "force"){
-                    val = "Force: " + highlightedObj.getForceMagnitude().toFixed(2);
+                    val = "Force: " + highlightedObj.getForceMagnitude().toFixed(2) + " N";
                 } else if (_viewMode == "tension-compression"){
                     var force = highlightedObj.getForceMagnitude();
-                    if (highlightedObj.isInCompression()) val = "Compression: " + Math.abs(force).toFixed(2);
-                    else val = "Tension: " + Math.abs(force).toFixed(2);
+                    if (highlightedObj.isInCompression()) val = "Compression: " + Math.abs(force).toFixed(2) + " N";
+                    else val = "Tension: " + Math.abs(force).toFixed(2) + " N";
                 }
                 $moreInfo.html(val);
                 $moreInfo.css({top:e.clientY-25, left:e.clientX});

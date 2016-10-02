@@ -38,9 +38,22 @@ img{
     top: 0;
     right: 0;
     z-index: 3;
-    width: 250px;
+    width: 330px;
         padding: 20px;
     text-align: right;
+}
+
+.btn-default{
+    background: #d3d7db;
+}
+
+#viewModeSelection{
+    text-align: left;
+    padding: 20px;
+}
+
+#viewModeSelection>input{
+    margin: 10px 10px 10px 0;
 }
 
 #moreInfo{
@@ -49,7 +62,7 @@ img{
     z-index: 10;
 }
 
-.label{
+.label-slider{
     margin-right: 10px;
 }
 
@@ -194,4 +207,16 @@ filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 
 span.modal-close{
     display: none;
+}
+
+.checkbox input.custom-checkbox[type="checkbox"]:checked + .icons .icon-checked, .radio input.custom-checkbox[type="checkbox"]:checked + .icons .icon-checked, .checkbox input.custom-radio[type="radio"]:checked + .icons .icon-checked, .radio input.custom-radio[type="radio"]:checked + .icons .icon-checked {
+    color: #6dd0f2;
+}
+
+.radio .icon-checked{
+    transition-duration: 0s;
+}
+
+.radio .icon-unchecked{
+    transition-duration: 0s;
 }
