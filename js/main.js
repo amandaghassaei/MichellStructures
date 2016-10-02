@@ -14,8 +14,8 @@ $(function() {
 
     var $moreInfo = $("#moreInfo");
 
-    var _h = 100;
-    var _L = 1000;
+    var _h = 10;
+    var _L = 100;
     var _n = 5;
     var _scaleX = 1;
     var _scaleY = 1;
@@ -35,7 +35,7 @@ $(function() {
         range: false,
         value: _h,
         min: 1,
-        max: 1000,
+        max: 100,
         step: 1
     });
 
@@ -44,7 +44,7 @@ $(function() {
         range: false,
         value: _L,
         min: _h+1,
-        max: 10000,
+        max: 300,
         step: 1
     });
 

@@ -8,7 +8,7 @@ var displayBeams = [];
 
 var forces = [new Force(new THREE.Vector3(0,-20,0))];
 
-var dashedLineMaterial = new THREE.LineDashedMaterial({color:0xebebeb, dashSize:10, gapSize:10, linewidth:3});
+var dashedLineMaterial = new THREE.LineDashedMaterial({color:0xebebeb, dashSize:1, gapSize:1, linewidth:3});
 
 var minLengthLineGeo = new THREE.Geometry();
 minLengthLineGeo.vertices.push(new THREE.Vector3());
