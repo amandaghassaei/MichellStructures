@@ -17,6 +17,8 @@ $(function() {
     var _h = 100;
     var _L = 1000;
     var _n = 5;
+    var _scaleX = 1;
+    var _scaleY = 1;
     var _P = new THREE.Vector3(0,0,0);
 
     var _viewMode = "force";
@@ -53,6 +55,24 @@ $(function() {
         min: 1,
         max: 20,
         step: 1
+    });
+
+    var xScaleSlider = $("#scaleX").slider({
+        orientation: 'horizontal',
+        range: false,
+        value: _scaleX,
+        min: 0.1,
+        max: 10,
+        step: 0.01
+    });
+
+    var yScaleSlider = $("#scaleY").slider({
+        orientation: 'horizontal',
+        range: false,
+        value: _scaleY,
+        min: 0.1,
+        max: 10,
+        step: 0.01
     });
 
     hSlider.on("slide", function(){

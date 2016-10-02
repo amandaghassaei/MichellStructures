@@ -43,6 +43,10 @@ img{
     text-align: right;
 }
 
+#aboutModal{
+    margin-bottom: 15px;
+}
+
 .btn-default{
     background: #d3d7db;
 }
