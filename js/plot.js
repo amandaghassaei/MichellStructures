@@ -53,7 +53,17 @@ var moj = MethodOfJoints();
 
 //var layersObj = new THREE.Object3D();
 
+function unsolvable(){
+    $("#unsolvable").show();
+    deactivate();
+}
+
 function updateNodes(nodes, h, viewMode){
+
+    if (nodes == null){
+        unsolvable();
+        return;
+    }
 
     _.each(displayNodes, function(node){
         node.move(nodes[node.getIndex()[0]][node.getIndex()[1]]);
@@ -65,6 +75,11 @@ function updateNodes(nodes, h, viewMode){
 }
 
 function plotNodes(nodes, n, h, viewMode){
+
+    if (nodes == null){
+        unsolvable();
+        return;
+    }
 
     sceneClear();
 
@@ -219,6 +234,9 @@ function hexForRGBVal(val, max, isCompression){
 
 
 function doOtherStuff(nodes, h, viewMode){
+
+    $("#unsolvable").hide();
+    activate();
 
     var widthMax = 0;
     for (var i=1;i<nodes.length;i++){

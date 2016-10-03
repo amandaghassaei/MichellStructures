@@ -36,7 +36,7 @@ $(function() {
         orientation: 'horizontal',
         range: false,
         value: _L,
-        min: _h+1,
+        min: 1,
         max: 300,
         step: 1
     });
@@ -70,12 +70,6 @@ $(function() {
 
     setSliderInput(hSlider, "hValInput", function(){
         _h = hSlider.slider('value');
-        LSlider.slider({
-            min: _h+1
-        });
-        if (_h == _L) {
-            _L = _h+1;//prevent unsolvable system
-        }
         _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
         updateNodes(_nodes, _h, _viewMode);
     });

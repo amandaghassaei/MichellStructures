@@ -2,6 +2,8 @@
  * Created by ghassaei on 9/26/16.
  */
 
+var numIterToSolve = 0;
+
 function solveMichell(h, L, n, scaleX, scaleY) {//L = length, layers = number of layers
 
     h = h/scaleY;
@@ -15,7 +17,11 @@ function solveMichell(h, L, n, scaleX, scaleY) {//L = length, layers = number of
         return [[new THREE.Vector3(0, h/2, 0)], [new THREE.Vector3(L,0,0)]];
     }
     var gamma = Math.PI/4;//gamma between 0.01 and Math.PI/2-0.01
+    numIterToSolve = 0;
     var results = binarySearchMichell(gamma, Math.PI/8, h, n, L);
+
+    if (results == null) return null;//unsolvable
+
     for (var i=0;i<results.length;i++){
         for (var j=0;j<results[i].length;j++){
             results[i][j].x *= scaleX;
@@ -26,6 +32,13 @@ function solveMichell(h, L, n, scaleX, scaleY) {//L = length, layers = number of
 }
 
 function binarySearchMichell(gamma, stepSize, h, n, desiredLength){
+    numIterToSolve++;
+
+    if (numIterToSolve > 30){
+        //unsolvable
+        return null;
+    }
+
     var nodes = calcMichell(gamma, h, n);
     var currentLength = getMichellLength(nodes);
 

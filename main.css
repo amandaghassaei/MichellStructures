@@ -82,6 +82,21 @@ input.form-control {
     display: inline-block;
 }
 
+#unsolvable{
+    position: absolute;
+    padding-right: 430px;
+    padding-left: 110px;
+    width: 100%;
+    display:none;
+}
+#unsolvable>div{
+    margin: 0 auto;
+    width: 400px;
+    text-align: center;
+    padding-top: 200px;
+    font-size: 30pt;
+}
+
 #controls>input.form-control{
     margin-bottom: 5px;
     margin-top: 5px;
@@ -128,7 +143,7 @@ input.form-control {
     /*margin: 0 auto;*/
     position: absolute;
     bottom:0;
-    padding-right: 330px;
+    padding-right: 430px;
     padding-left: 110px;
 }
 
