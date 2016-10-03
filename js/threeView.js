@@ -9,7 +9,7 @@ var renderer = new THREE.WebGLRenderer({antialias: true});
 var wrapper = new THREE.Object3D();//object to set global scale and position
 
 var deactivatePlane = new THREE.Mesh(new THREE.PlaneGeometry(10000, 10000, 1, 1), new THREE.MeshBasicMaterial({transparent:true, opacity:0.75, color:0xf4f4f4}));
-deactivatePlane.position.z = 1;
+deactivatePlane.position.z = 5;
 deactivatePlane.visible = false;
 
 function initThreeJS(){

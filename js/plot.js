@@ -286,6 +286,10 @@ function doOtherStuff(nodes, h, viewMode){
 
     setScale(scale, widthMax*scale);
 
+    _.each(forces, function(force){
+        force.render(widthMax, scale);
+    });
+
     lengthLine.position.set(0,lineLengthY*scale,0);
     hLength.position.x += hLengthX*scale;
 }

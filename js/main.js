@@ -152,37 +152,48 @@ $(function() {
         mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
         mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
         raycaster.setFromCamera(mouse, camera);
-        var intersections = raycaster.intersectObjects(wrapper.children);
+        var intersections = raycaster.intersectObjects(wrapper.children.concat([forces[0].arrow.cone]));
         var highlightedObj = null;
         if (intersections.length > 0) {
             _.each(intersections, function(thing){
                 if (thing.object && thing.object._myBeam){
                     thing.object._myBeam.highlight();
                     highlightedObj = thing.object._myBeam;
+                } else if (thing.object && thing.object._myForce){
+                    //thing.object._myForce.highlight();
+                    highlightedObj = thing.object._myForce;
                 }
             });
         }
         if (highlightedObj){
-            if (_viewMode == "none"){
-
-            } else {
-                var val = "";
-                if (_viewMode == "length"){
-                    val = "Length: " + highlightedObj.getLength().toFixed(2) + " m";
-                } else if (_viewMode == "force"){
-                    val = "Force: " + highlightedObj.getForceMagnitude().toFixed(2) + " N";
-                } else if (_viewMode == "tension-compression"){
-                    var force = highlightedObj.getForceMagnitude();
-                    if (highlightedObj.isInCompression()) val = "Compression: " + Math.abs(force).toFixed(2) + " N";
-                    else val = "Tension: " + Math.abs(force).toFixed(2) + " N";
-                }
+            if (highlightedObj.getMagnitude){
+                //force
+                var val = "Applied Force: " + highlightedObj.getMagnitude().toFixed(2) + " N";
                 $moreInfo.html(val);
-                $moreInfo.css({top:e.clientY-40, left:e.clientX});
+                $moreInfo.css({top: e.clientY - 40, left: e.clientX});
                 $moreInfo.show();
+            } else {
+                if (_viewMode == "none") {
+
+                } else {
+                    var val = "";
+                    if (_viewMode == "length") {
+                        val = "Length: " + highlightedObj.getLength().toFixed(2) + " m";
+                    } else if (_viewMode == "force") {
+                        val = "Force: " + highlightedObj.getForceMagnitude().toFixed(2) + " N";
+                    } else if (_viewMode == "tension-compression") {
+                        var force = highlightedObj.getForceMagnitude();
+                        if (highlightedObj.isInCompression()) val = "Compression: " + Math.abs(force).toFixed(2) + " N";
+                        else val = "Tension: " + Math.abs(force).toFixed(2) + " N";
+                    }
+                    $moreInfo.html(val);
+                    $moreInfo.css({top: e.clientY - 40, left: e.clientX});
+                    $moreInfo.show();
+                }
             }
         } else {
             _.each(displayBeams, function(beam){
-                beam.unhighlight();
+                beam.unhighlight();//todo wrong place?
             });
             $moreInfo.hide();
         }
