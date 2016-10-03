@@ -13,6 +13,13 @@ body{
     overflow: hidden;
 }
 
+a{
+    color:#6dd0f2;
+}
+a:hover{
+    color:#6dd0f2;
+}
+
 img{
     width:60px;
     position: absolute;
@@ -285,6 +292,9 @@ filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 
 .modal-content{
     border-radius: 0;
+}
+.modal-body{
+    padding: 20px 35px;
 }
 
 span.modal-close{
