@@ -143,6 +143,7 @@ function colorBeams(viewMode){
         _.each(displayBeams, function(beam, i){
             beam.setTensionCompressionColor(forces[i], max);
         });
+        setScaleBars(viewMode, null, max);
 
     } else if (viewMode == "force"){
         moj.solveForces(displayNodes);
@@ -156,6 +157,7 @@ function colorBeams(viewMode){
         _.each(displayBeams, function(beam, i){
             beam.setColor(forces[i], max, min);
         });
+        setScaleBars(viewMode, min, max);
 
     } else if (viewMode == "length"){
         var lengths = [];
@@ -167,13 +169,54 @@ function colorBeams(viewMode){
         _.each(displayBeams, function(beam, i){
             beam.setColor(lengths[i], max, min);
         });
+        setScaleBars(viewMode, min, max);
     } else {
         //none
         _.each(displayBeams, function(beam){
             beam.setDefaultColor();
         });
+        setScaleBars(viewMode);
     }
 }
+
+function setScaleBars(viewMode, min, max){
+    if (viewMode == "none"){
+        $("#rainbow").hide();
+        $("#tension-compressionScale").hide();
+    } else if (viewMode == "length"  || viewMode == "force"){
+        for (var i=0;i<=20;i++){
+            var val = (max-min)*(20-i)/20+min;
+            $("#swatch" + i).css("background", hexForVal(val, min, max));
+            if (i%5 == 0) $("#label" + i).html(val.toFixed(2));
+        }
+        $("#rainbow").show();
+        $("#tension-compressionScale").hide();
+    } else if (viewMode == "tension-compression"){
+        for (var i=0;i<=20;i++){
+            var val = (max-min)*(20-i)/20+min;
+            $("#tension" + i).css("background", hexForRGBVal(val, max, false));
+            $("#compression" + i).css("background", hexForRGBVal(val, max, true));
+            if (i%5 == 0) $("#labelCT" + i).html(val.toFixed(2));
+        }
+        $("#rainbow").hide();
+        $("#tension-compressionScale").show();
+    }
+}
+
+function hexForVal(val, min, max){
+    var scaledVal = (1-(val - min)/(max - min)) * 0.7;
+    var color = new THREE.Color();
+    color.setHSL(scaledVal, 1, 0.5);
+    return "#" + color.getHexString();
+}
+function hexForRGBVal(val, max, isCompression){
+    var scaledVal = val/max;
+    var color = new THREE.Color();
+    if (isCompression) color.setRGB(scaledVal, 0, 0);
+    else color.setRGB(0, 0, scaledVal);
+    return "#" + color.getHexString();
+}
+
 
 function doOtherStuff(nodes, h, viewMode){
 
@@ -187,10 +230,10 @@ function doOtherStuff(nodes, h, viewMode){
     colorBeams(viewMode);
 
     //calculate scaling
-    var paddingLeft = $('#controls').width()+50;
-    var paddingRight = 130;
+    var paddingLeft = $('#controls').width()+150;
+    var paddingRight = 135;
     var scale = (window.innerWidth-(paddingLeft+paddingRight))/widthMax;
-    scene.position.set((paddingRight-paddingLeft)/2,0,0);
+    scene.position.set((paddingRight-paddingLeft)/2,20,0);
 
     var arrowScale = 100;
     var lineLengthY = -(window.innerHeight/2-80)/scale;

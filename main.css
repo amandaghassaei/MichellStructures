@@ -36,11 +36,39 @@ img{
 #controls{
     position: absolute;
     top: 0;
-    right: 0;
+    right: 100px;
     z-index: 3;
     width: 330px;
         padding: 20px;
     text-align: right;
+}
+
+.scaleBars{
+    width: 100px;
+    position: absolute;
+    top:0;
+    right:0;
+    /*background: red;*/
+    height:100%;
+    padding: 5% 0;
+    line-height: 0;
+    padding-left: 10px;
+}
+.scaleBars>div{
+    width:100%;
+    height:5%;
+}
+.colorSwatch{
+    width:10px;
+    height:100%;
+    background: black;
+    display: inline-block;
+}
+#tension-compressionScale .colorSwatch{
+    width:5px;
+}
+.scaleBars>div>span{
+    margin-left: 7px;
 }
 
 #controls>.flat-slider{
@@ -49,9 +77,12 @@ img{
     margin-right: 10px;
 }
 
-#controls>input.form-control{
+input.form-control {
     width: 90px;
     display: inline-block;
+}
+
+#controls>input.form-control{
     margin-bottom: 5px;
     margin-top: 5px;
 }
@@ -71,6 +102,7 @@ img{
 #viewModeSelection{
     text-align: left;
     padding: 20px;
+    padding-left: 100px;
 }
 
 #viewModeSelection>input{
@@ -81,6 +113,8 @@ img{
     display: none;
     position: absolute;
     z-index: 10;
+    background: white;
+    padding:5px 10px;
 }
 
 .label-slider{
@@ -124,14 +158,16 @@ img{
 }
 
 #h{
-    left: -30px;
+    left: -20px;
     height: 200px;
 }
 
 .rotate {
+    z-index: 10;
         position: absolute;
-    left: -60px;
-    width: 200px;
+    left: -70px;
+    width: 220px;
+    padding-left: 43px;
     top: 50%;
         display: inline-block;
 
@@ -152,6 +188,12 @@ filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 
 }
 
+#hValInput:focus{
+    transform: translate(0, 20px) rotate(90deg);
+    -webkit-transform: translate(0, 20px) rotate(90deg);
+    -moz-transform: translate(0, 20px) rotate(90deg);
+    -o-transform: translate(0, 20px) rotate(90deg);
+}
 
 
 

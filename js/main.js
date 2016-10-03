@@ -23,13 +23,6 @@ $(function() {
 
     var _viewMode = "force";
 
-    setUI();
-
-    function setUI() {
-        $("#lVal").html(_L);
-        $("#hVal").html(_h);
-    }
-
     var hSlider = $("#h").slider({
         orientation: 'vertical',
         range: false,
@@ -75,7 +68,7 @@ $(function() {
         step: 0.01
     });
 
-    hSlider.on("slide", function(){
+    setSliderInput(hSlider, "hValInput", function(){
         _h = hSlider.slider('value');
         LSlider.slider({
             min: _h+1
@@ -83,14 +76,12 @@ $(function() {
         if (_h == _L) {
             _L = _h+1;//prevent unsolvable system
         }
-        setUI();
         _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
         updateNodes(_nodes, _h, _viewMode);
     });
 
-    LSlider.on("slide", function(){
+    setSliderInput(LSlider, "lValInput", function(){
         _L = LSlider.slider('value');
-        setUI();
         _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
         updateNodes(_nodes, _h, _viewMode);
     });
@@ -132,13 +123,24 @@ $(function() {
         render();
     });
 
-    var $modal = $('body').modal();
-    var modalAPI = $modal.data('modal');
+    var scaleHTML = "";
+    for (var i=0;i<=20;i++){
+        scaleHTML += "<div>";
+        scaleHTML += "<div id='swatch" + i + "' class='colorSwatch'></div>";
+        if (i%5 == 0) scaleHTML += "<span id='label" + i + "'></span>";
+        scaleHTML += "</div>";
+    }
+    $("#rainbow").html(scaleHTML);
 
-    $('#aboutModal').click(function(e) {
-        e.preventDefault();
-        modalAPI.open("Sources: <a target='_blank' href='http://www.sciencedirect.com.libproxy.mit.edu/science/article/pii/S0010448514000682'>Algebraic Graph Studies</a>");
-    });
+    var scaleHTML = "";
+    for (var i=0;i<=20;i++){
+        scaleHTML += "<div>";
+        scaleHTML += "<div id='tension" + i + "' class='colorSwatch'></div>";
+        scaleHTML += "<div id='compression" + i + "' class='colorSwatch'></div>";
+        if (i%5 == 0) scaleHTML += "<span id='labelCT" + i + "'></span>";
+        scaleHTML += "</div>";
+    }
+    $("#tension-compressionScale").html(scaleHTML);
 
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
@@ -176,7 +178,7 @@ $(function() {
                     else val = "Tension: " + Math.abs(force).toFixed(2) + " N";
                 }
                 $moreInfo.html(val);
-                $moreInfo.css({top:e.clientY-25, left:e.clientX});
+                $moreInfo.css({top:e.clientY-40, left:e.clientX});
                 $moreInfo.show();
             }
         } else {
