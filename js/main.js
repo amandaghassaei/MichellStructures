@@ -19,7 +19,40 @@ $(function() {
     var _n = 5;
     var _scaleX = 1;
     var _scaleY = 1;
-    var _P = new THREE.Vector3(0,0,0);
+
+    initPlot();
+
+    $("#xForce").change(function(){
+        var val = $("#xForce").val();
+        if (isNaN(parseFloat(val))) return;
+        val = parseFloat(val);
+        if (val > 1) val = 1;
+        if (val < -1) val = -1;
+        var y = Math.sqrt(1-val*val);
+        if (parseFloat($("#yForce").val()) < 0) y *= -1;
+        forces[0].setDirection(val, y);
+        updateNodes(_nodes, _h, _viewMode);
+    });
+    $("#yForce").change(function(){
+        var val = $("#yForce").val();
+        if (isNaN(parseFloat(val))) return;
+        val = parseFloat(val);
+        if (val > 1) val = 1;
+        if (val < -1) val = -1;
+        var x = Math.sqrt(1-val*val);
+        if (parseFloat($("#xForce").val()) < 0) x *= -1;
+        forces[0].setDirection(x, val);
+        updateNodes(_nodes, _h, _viewMode);
+    });
+
+    $("#magForce").change(function(){
+        var val = $("#magForce").val();
+        if (isNaN(parseFloat(val))) return;
+        val = parseFloat(val);
+        if (val < 0) val = 0;
+        forces[0].setMagnitude(val);
+        updateNodes(_nodes, _h, _viewMode);
+    });
 
     var _viewMode = "force";
 
@@ -146,6 +179,14 @@ $(function() {
     var plane = new THREE.Plane();
     plane.setFromNormalAndCoplanarPoint(new THREE.Vector3(0,0,1), new THREE.Vector3(0,0,0));
 
+    var isDragging = false;
+    window.addEventListener('mousedown', function(){
+        isDragging = true;
+    }, false);
+    window.addEventListener('mouseup', function(){
+        isDragging = false;
+    }, false);
+
     window.addEventListener( 'mousemove', mouseMove, false );
     function mouseMove(e){
         e.preventDefault();
@@ -172,6 +213,11 @@ $(function() {
                 $moreInfo.html(val);
                 $moreInfo.css({top: e.clientY - 40, left: e.clientX});
                 $moreInfo.show();
+                if (isDragging){
+                    var intersection = new THREE.Vector3();
+                    raycaster.ray.intersectPlane(plane, intersection);
+                    highlightedObj.move(intersection, calcScale(_nodes));
+                }
             } else {
                 if (_viewMode == "none") {
 

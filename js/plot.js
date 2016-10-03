@@ -6,7 +6,7 @@
 var displayNodes = [];
 var displayBeams = [];
 
-var forces = [new Force(new THREE.Vector3(0,-20,0))];
+var forces = [];
 
 var dashedLineMaterial = new THREE.LineDashedMaterial({color:0xebebeb, dashSize:1, gapSize:1, linewidth:3});
 
@@ -50,6 +50,10 @@ hLength.children[1].line.material.linewidth = 2;
 
 var moj = MethodOfJoints();
 
+
+function initPlot(){
+    forces.push(new Force(new THREE.Vector3(0,-20,0)));
+}
 
 //var layersObj = new THREE.Object3D();
 
@@ -232,6 +236,21 @@ function hexForRGBVal(val, max, isCompression){
     return "#" + color.getHexString();
 }
 
+function calcScale(nodes){
+    var widthMax = 0;
+    for (var i=1;i<nodes.length;i++){
+        for (var j=0;j<nodes[i].length;j++){
+            if (nodes[i][j].x>widthMax) widthMax = nodes[i][j].x;
+        }
+    }
+    console.log(widthMax);
+
+    //calculate scaling
+    var paddingLeft = $('#controls').width()+150;
+    var paddingRight = 135;
+    return (window.innerWidth-(paddingLeft+paddingRight))/widthMax;
+}
+
 
 function doOtherStuff(nodes, h, viewMode){
 
@@ -247,10 +266,9 @@ function doOtherStuff(nodes, h, viewMode){
 
     colorBeams(viewMode);
 
-    //calculate scaling
-    var paddingLeft = $('#controls').width()+150;
     var paddingRight = 135;
-    var scale = (window.innerWidth-(paddingLeft+paddingRight))/widthMax;
+    var paddingLeft = $('#controls').width()+150;
+    var scale = calcScale(nodes);
     scene.position.set((paddingRight-paddingLeft)/2,20,0);
 
     var arrowScale = 100;
