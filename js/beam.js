@@ -45,7 +45,7 @@ Beam.prototype.setColor = function(val, max, min){
 };
 
 Beam.prototype.setTensionCompressionColor = function(val, max){
-    var scaledVal = val/max;
+    var scaledVal = Math.pow(val/max, 1/2);
     if (this.isInCompression()){
         this.object3D.material.color.setRGB(scaledVal, 0, 0);
     } else {

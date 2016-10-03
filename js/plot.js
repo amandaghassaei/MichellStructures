@@ -229,7 +229,7 @@ function hexForVal(val, min, max){
     return "#" + color.getHexString();
 }
 function hexForRGBVal(val, max, isCompression){
-    var scaledVal = val/max;
+    var scaledVal = Math.pow(val/max, 1/2);
     var color = new THREE.Color();
     if (isCompression) color.setRGB(scaledVal, 0, 0);
     else color.setRGB(0, 0, scaledVal);

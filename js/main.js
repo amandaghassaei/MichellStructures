@@ -190,11 +190,12 @@ $(function() {
         isDraggingArrow = false;
     }, false);
 
-    function dragArrow(){
+    function dragArrow(e){
         var intersection = new THREE.Vector3();
         raycaster.ray.intersectPlane(plane, intersection);
         forces[0].move(intersection);
         updateNodes(_nodes, _h, _viewMode);
+        $moreInfo.hide();
     }
 
     window.addEventListener( 'mousemove', mouseMove, false );
@@ -205,7 +206,7 @@ $(function() {
         raycaster.setFromCamera(mouse, camera);
 
         if (isDraggingArrow){
-            dragArrow();
+            dragArrow(e);
         } else {
 
             var intersections = raycaster.intersectObjects(wrapper.children.concat([forces[0].arrow.cone]));
@@ -230,7 +231,7 @@ $(function() {
                     $moreInfo.show();
                     if (isDragging) {
                         isDraggingArrow = true;
-                        dragArrow();
+                        dragArrow(e);
                     }
                 } else {
                     if (_viewMode == "none") {
