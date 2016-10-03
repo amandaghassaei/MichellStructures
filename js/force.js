@@ -5,7 +5,7 @@
 
 function Force(force){
     this.setForce(force);
-    this.arrow = new THREE.ArrowHelper(this.getDirection(), new THREE.Vector3(0,0,0), this.getMagnitude(), 0xaaaaaa);
+    this.arrow = new THREE.ArrowHelper(this.getDirection(), new THREE.Vector3(0,0,0), this.getMagnitude(), 0x000000);//0xaaaaaa
     this.arrow.setLength(this.getMagnitude(), 3, 3);
     this.arrow.line.material.linewidth = 4;
     this.arrow.cone._myForce = this;
@@ -44,19 +44,14 @@ Force.prototype.getForce = function(){
 
 Force.prototype.render = function(position, scale){
     this.arrow.position.set(position*scale/2, 0, 0.1);
+    this.arrow.setDirection(this.getDirection());
     this.arrow.setLength(3*this.getMagnitude()/scale, 10/scale, 10/scale);
-
 };
 
-Force.prototype.move = function(intersection, scale){
-    console.log(intersection.clone());
-    console.log(this.arrow.position);
-    console.log(scale);
-    //this.force = headPos.sub(this.arrow.position);
-    //
-    //this.arrow.setDirection(this.getDirection());
-    //this.arrow.setLength(3*this.getMagnitude()/scale, 10/scale, 10/scale);
-    //render();
+Force.prototype.move = function(intersection){
+    console.log(intersection.x);
+    var force = new THREE.Vector3((intersection.x-85)*20/55, (intersection.y-20)*20/55, 0);
+    this.setForce(force);
 };
 
 Force.prototype.destroy = function(){

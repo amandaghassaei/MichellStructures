@@ -236,39 +236,23 @@ function hexForRGBVal(val, max, isCompression){
     return "#" + color.getHexString();
 }
 
-function calcScale(nodes){
-    var widthMax = 0;
-    for (var i=1;i<nodes.length;i++){
-        for (var j=0;j<nodes[i].length;j++){
-            if (nodes[i][j].x>widthMax) widthMax = nodes[i][j].x;
-        }
-    }
-    console.log(widthMax);
-
-    //calculate scaling
-    var paddingLeft = $('#controls').width()+150;
-    var paddingRight = 135;
-    return (window.innerWidth-(paddingLeft+paddingRight))/widthMax;
-}
-
-
 function doOtherStuff(nodes, h, viewMode){
 
     $("#unsolvable").hide();
     activate();
 
+    colorBeams(viewMode);
+
     var widthMax = 0;
     for (var i=1;i<nodes.length;i++){
         for (var j=0;j<nodes[i].length;j++){
             if (nodes[i][j].x>widthMax) widthMax = nodes[i][j].x;
         }
     }
-
-    colorBeams(viewMode);
-
-    var paddingRight = 135;
+    //calculate scaling
     var paddingLeft = $('#controls').width()+150;
-    var scale = calcScale(nodes);
+    var paddingRight = 135;
+    var scale = (window.innerWidth-(paddingLeft+paddingRight))/widthMax;
     scene.position.set((paddingRight-paddingLeft)/2,20,0);
 
     var arrowScale = 100;
