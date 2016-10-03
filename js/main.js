@@ -23,6 +23,11 @@ $(function() {
 
     var _viewMode = "force";
 
+    $("#about").click(function(e){
+        e.preventDefault();
+        $('#aboutModal').modal('show')
+    });
+
     var hSlider = $("#h").slider({
         orientation: 'vertical',
         range: false,
