@@ -217,7 +217,7 @@ $(function() {
                         thing.object._myBeam.highlight();
                         highlightedObj = thing.object._myBeam;
                     } else if (thing.object && thing.object._myForce) {
-                        //thing.object._myForce.highlight();
+                        thing.object._myForce.highlight();
                         highlightedObj = thing.object._myForce;
                     }
                 });
@@ -255,6 +255,9 @@ $(function() {
             } else {
                 _.each(displayBeams, function (beam) {
                     beam.unhighlight();//todo wrong place?
+                });
+                _.each(forces, function(force){
+                    force.unhighlight();
                 });
                 $moreInfo.hide();
             }

@@ -5,7 +5,7 @@
 
 function Force(force){
     this.setForce(force);
-    this.arrow = new THREE.ArrowHelper(this.getDirection(), new THREE.Vector3(0,0,0), this.getMagnitude(), 0x000000);//0xaaaaaa
+    this.arrow = new THREE.ArrowHelper(this.getDirection(), new THREE.Vector3(0,0,0), this.getMagnitude(), 0xaaaaaa);//0xaaaaaa
     this.arrow.setLength(this.getMagnitude(), 3, 3);
     this.arrow.line.material.linewidth = 4;
     this.arrow.cone._myForce = this;
@@ -40,6 +40,16 @@ Force.prototype.setDirection = function(x, y){
 
 Force.prototype.getForce = function(){
     return this.force.clone();
+};
+
+Force.prototype.highlight = function(){
+    this.arrow.line.material.color.setHex(0x000000);
+    this.arrow.cone.material.color.setHex(0x000000);
+};
+
+Force.prototype.unhighlight = function(){
+    this.arrow.line.material.color.setHex(0xaaaaaa);
+    this.arrow.cone.material.color.setHex(0xaaaaaa);
 };
 
 Force.prototype.render = function(position, scale){
