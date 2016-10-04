@@ -12,11 +12,11 @@ body{
     margin:0;
     overflow: hidden;
     -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none;   /* Chrome/Safari/Opera */
-  -khtml-user-select: none;    /* Konqueror */
-  -moz-user-select: none;      /* Firefox */
-  -ms-user-select: none;       /* Internet Explorer/Edge */
-  user-select: none;           /* Non-prefixed version, currently
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;           /* Non-prefixed version, currently
                                   not supported by any browser */
 }
 
@@ -124,6 +124,10 @@ input.form-control {
 
 #aboutModal{
     margin-bottom: 15px;
+}
+
+#about{
+    margin-bottom: 10px;
 }
 
 .btn-default{

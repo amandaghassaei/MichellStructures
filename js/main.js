@@ -176,9 +176,9 @@ $(function() {
 
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
-    var plane = new THREE.Plane();
-    plane.setFromNormalAndCoplanarPoint(new THREE.Vector3(0,0,1), new THREE.Vector3(0,0,0));
-    scene.add(plane);
+    //var plane = new THREE.Plane();
+    //plane.setFromNormalAndCoplanarPoint(new THREE.Vector3(0,0,1), new THREE.Vector3(0,0,0));
+    //scene.add(plane);
 
     var isDragging = false;
     var isDraggingArrow = false;
@@ -191,9 +191,8 @@ $(function() {
     }, false);
 
     function dragArrow(e){
-        var intersection = new THREE.Vector3();
-        raycaster.ray.intersectPlane(plane, intersection);
-        forces[0].move(intersection);
+        var intersection = raycaster.intersectObject(deactivatePlane);
+        forces[0].move(intersection[0].point);
         updateNodes(_nodes, _h, _viewMode);
         $moreInfo.hide();
     }

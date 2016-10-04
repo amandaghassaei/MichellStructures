@@ -41,6 +41,7 @@ function sceneClear(){
 
 function setScale(scale, width){
     _.each(scene.children, function(child){
+        if (child == deactivatePlane) return;
         child.scale.set(scale, scale, scale);
         child.position.x = -width/2;
     });

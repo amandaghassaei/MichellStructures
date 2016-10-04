@@ -59,8 +59,8 @@ Force.prototype.render = function(position, scale){
 };
 
 Force.prototype.move = function(intersection){
-    console.log(intersection.x);
-    var force = new THREE.Vector3((intersection.x-85)*20/55, (intersection.y-20)*20/55, 0);
+    var force = (intersection.sub(new THREE.Vector3(-152.5, 20, 0)).sub(this.arrow.position)).multiplyScalar(1/3);
+    force.z = 0;
     this.setForce(force);
 };
 
