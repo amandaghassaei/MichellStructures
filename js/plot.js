@@ -153,7 +153,6 @@ function plotNodes(nodes, n, h, viewMode){
 function colorBeams(viewMode){
     //colors
     if (viewMode == "tension-compression"){
-        moj.solveForces(displayNodes);
         var forces = [];
         _.each(displayBeams, function(beam){
             forces.push(beam.getForceMagnitude());
@@ -165,7 +164,7 @@ function colorBeams(viewMode){
         setScaleBars(viewMode, null, max);
 
     } else if (viewMode == "force"){
-        moj.solveForces(displayNodes);
+
 
         var forces = [];
         _.each(displayBeams, function(beam){
@@ -178,15 +177,26 @@ function colorBeams(viewMode){
         });
         setScaleBars(viewMode, min, max);
 
-    } else if (viewMode == "length"){
+    } else if (viewMode == "length") {
         var lengths = [];
-        _.each(displayBeams, function(beam){
+        _.each(displayBeams, function (beam) {
             lengths.push(beam.getLength());
         });
         var max = _.max(lengths);
         var min = _.min(lengths);
-        _.each(displayBeams, function(beam, i){
+        _.each(displayBeams, function (beam, i) {
             beam.setColor(lengths[i], max, min);
+        });
+        setScaleBars(viewMode, min, max);
+    } else if (viewMode == "FL"){
+        var vals = [];
+        _.each(displayBeams, function (beam) {
+            vals.push(beam.getLength()*beam.getForceMagnitude());
+        });
+        var max = _.max(vals);
+        var min = _.min(vals);
+        _.each(displayBeams, function (beam, i) {
+            beam.setColor(vals[i], max, min);
         });
         setScaleBars(viewMode, min, max);
     } else {
@@ -202,7 +212,7 @@ function setScaleBars(viewMode, min, max){
     if (viewMode == "none"){
         $("#rainbow").hide();
         $("#tension-compressionScale").hide();
-    } else if (viewMode == "length"  || viewMode == "force"){
+    } else if (viewMode == "length"  || viewMode == "force" || viewMode == "FL"){
         for (var i=0;i<=20;i++){
             var val = (max-min)*(20-i)/20+min;
             $("#swatch" + i).css("background", hexForVal(val, min, max));
@@ -236,12 +246,30 @@ function hexForRGBVal(val, max, isCompression){
     return "#" + color.getHexString();
 }
 
+function commafy( num ) {
+    var str = num.toString().split('.');
+    if (str[0].length >= 5) {
+        str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+    }
+    if (str[1] && str[1].length >= 5) {
+        str[1] = str[1].replace(/(\d{3})/g, '$1 ');
+    }
+    return str.join('.');
+}
+
 function doOtherStuff(nodes, h, viewMode){
 
     $("#unsolvable").hide();
     activate();
 
+    moj.solveForces(displayNodes);
     colorBeams(viewMode);
+
+    var totalFL = 0;
+        _.each(displayBeams, function (beam) {
+            totalFL += beam.getLength()*beam.getForceMagnitude();
+        });
+    $("#FL").html(commafy(totalFL.toFixed(2)));
 
     var widthMax = 0;
     for (var i=1;i<nodes.length;i++){

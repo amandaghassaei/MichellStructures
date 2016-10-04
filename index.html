@@ -72,6 +72,10 @@
             Internal Forces
         </label>
         <label class="radio">
+            <input name="viewMode" value="FL" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+            Force x Length
+        </label>
+        <label class="radio">
             <input name="viewMode" value="tension-compression" data-toggle="radio" class="custom-radio" type="radio"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
             Tension/Compression
         </label>
@@ -79,6 +83,8 @@
     Applied Force Direction (XY):<br/><input id="xForce" value="" placeholder="" class="form-control" type="text">&nbsp;<input id="yForce" value="" placeholder="" class="form-control" type="text"><br/>
     <br/>
     Applied Force Magnitude: <input id="magForce" value="" placeholder="" class="form-control" type="text">
+    <br/>
+    <span id="FLContainer">&Sigma; | F<sub>i</sub> L<sub>i</sub> | = <span id="FL"></span> Nm</span>
 </div>
 <div id="moreInfo"></div>
 <div id="unsolvable"><div>UNSOLVABLE</div></div>

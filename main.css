@@ -87,6 +87,11 @@ img{
     position: relative;
 }
 
+#FLContainer{
+    margin-top: 15px;
+display: inline-block;
+}
+
 #controls>.flat-slider{
     width: 100px;
     display: inline-block;

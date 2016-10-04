@@ -245,6 +245,8 @@ $(function() {
                             var force = highlightedObj.getForceMagnitude();
                             if (highlightedObj.isInCompression()) val = "Compression: " + Math.abs(force).toFixed(2) + " N";
                             else val = "Tension: " + Math.abs(force).toFixed(2) + " N";
+                        } else if (_viewMode == "FL"){
+                            val = "F x L: " + (highlightedObj.getForceMagnitude()*highlightedObj.getLength()).toFixed(2) + " Nm";
                         }
                         $moreInfo.html(val);
                         $moreInfo.css({top: e.clientY - 40, left: e.clientX});
