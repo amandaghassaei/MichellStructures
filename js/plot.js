@@ -48,6 +48,18 @@ hLength.add(new THREE.ArrowHelper( new THREE.Vector3(0,-1,0), new THREE.Vector3(
 hLength.children[0].line.material.linewidth = 2;
 hLength.children[1].line.material.linewidth = 2;
 
+
+var lineMaterial = new THREE.LineBasicMaterial({color:0x444444, linewidth:2});
+var groundGeo = new THREE.Geometry();
+groundGeo.vertices.push(new THREE.Vector3(0,0,0));
+groundGeo.vertices.push(new THREE.Vector3(-1,-0.5,0));
+groundGeo.vertices.push(new THREE.Vector3(-1,0.5,0));
+groundGeo.vertices.push(new THREE.Vector3(0,0,0));
+var ground1 = new THREE.Line(groundGeo, lineMaterial);
+scene.add(ground1);
+var ground2 = new THREE.Line(groundGeo, lineMaterial);
+scene.add(ground2);
+
 var moj = MethodOfJoints();
 
 
@@ -315,6 +327,13 @@ function doOtherStuff(nodes, h, viewMode){
     maxHGeo.computeLineDistances();
 
     setScale(scale, widthMax*scale);
+
+    ground1.scale.set(10,10,10);
+    ground1.position.y = -h/2*scale;
+    ground1.position.z = 1;
+    ground2.scale.set(10,10,10);
+    ground2.position.y = h/2*scale;
+    ground2.position.z = 1;
 
     _.each(forces, function(force){
         force.render(widthMax, scale);

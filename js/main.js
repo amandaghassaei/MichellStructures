@@ -176,9 +176,6 @@ $(function() {
 
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
-    //var plane = new THREE.Plane();
-    //plane.setFromNormalAndCoplanarPoint(new THREE.Vector3(0,0,1), new THREE.Vector3(0,0,0));
-    //scene.add(plane);
 
     var isDragging = false;
     var isDraggingArrow = false;
@@ -204,7 +201,7 @@ $(function() {
         mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
         raycaster.setFromCamera(mouse, camera);
 
-        if (isDraggingArrow){
+        if (isDraggingArrow && e.which == 1){
             dragArrow(e);
         } else {
 
