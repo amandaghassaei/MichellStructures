@@ -2,6 +2,8 @@
  * Created by ghassaei on 9/16/16.
  */
 
+var isDragging = false;
+var isDraggingArrow = false;
 
 $(function() {
 
@@ -14,8 +16,8 @@ $(function() {
 
     var $moreInfo = $("#moreInfo");
 
-    var _h = 10;
-    var _L = 100;
+    var _h = 16;
+    var _L = 40;
     var _n = 5;
     var _scaleX = 1;
     var _scaleY = 1;
@@ -124,18 +126,19 @@ $(function() {
         plotNodes(_nodes, _n, _h, _viewMode);//must recalc connectivity
     });
 
+    $("#gammaPrescaled").hide();
     setSliderInput(xScaleSlider, "xScaleInput", function(){
         _scaleX = xScaleSlider.slider('value');
-        if (_scaleX != _scaleY) $("#gammaDisplay").hide();
-        else $("#gammaDisplay").show();
+        if (_scaleX != _scaleY) $("#gammaPrescaled").show();
+        else $("#gammaPrescaled").hide();
         _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
         updateNodes(_nodes, _h, _viewMode);
     });
 
     setSliderInput(yScaleSlider, "yScaleInput", function(){
         _scaleY = yScaleSlider.slider('value');
-       if (_scaleX != _scaleY) $("#gammaDisplay").hide();
-        else $("#gammaDisplay").show();
+       if (_scaleX != _scaleY) $("#gammaPrescaled").show();
+        else $("#gammaPrescaled").hide();
         _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
         updateNodes(_nodes, _h, _viewMode);
     });
@@ -177,8 +180,6 @@ $(function() {
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
 
-    var isDragging = false;
-    var isDraggingArrow = false;
     window.addEventListener('mousedown', function(){
         isDragging = true;
     }, false);
@@ -266,7 +267,6 @@ $(function() {
     var _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
     plotNodes(_nodes, _n, _h, _viewMode);
 
-
 });
 
 function setSliderInput(sliderEl, id, callback){
@@ -291,6 +291,9 @@ function setSliderInput(sliderEl, id, callback){
     $input.val(sliderEl.slider('value'));
     sliderEl.on("slide", function(){
         $input.val(sliderEl.slider('value'));
+        //need this for some reason
+        isDragging = false;
+        isDraggingArrow = false;
         callback();
     });
 }

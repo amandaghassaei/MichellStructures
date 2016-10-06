@@ -13,9 +13,6 @@ function solveMichell(h, L, n, scaleX, scaleY) {//L = length, layers = number of
         console.log("n is < 1");
         return [];
     }
-    if (n==1){
-        return [[new THREE.Vector3(0, h/2, 0)], [new THREE.Vector3(L,0,0)]];
-    }
     var gamma = Math.PI/4;//gamma between 0.01 and Math.PI/2-0.01
     numIterToSolve = 0;
     var results = binarySearchMichell(gamma, Math.PI/8, h, n, L);
