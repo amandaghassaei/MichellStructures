@@ -21,10 +21,10 @@ body{
 }
 
 a{
-    color:#6dd0f2;
+    color:#8cbaed;
 }
 a:hover{
-    color:#6dd0f2;
+    color:#8cbaed;
 }
 
 img{
@@ -272,7 +272,7 @@ filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 .flat-slider .ui-slider-handle {
   width: 20px;
   height: 20px;
-  background: #6dd0f2;
+  background: #666;
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -317,8 +317,12 @@ span.modal-close{
     display: none;
 }
 
+.form-control:focus{
+    border-color: #666;
+}
+
 .checkbox input.custom-checkbox[type="checkbox"]:checked + .icons .icon-checked, .radio input.custom-checkbox[type="checkbox"]:checked + .icons .icon-checked, .checkbox input.custom-radio[type="radio"]:checked + .icons .icon-checked, .radio input.custom-radio[type="radio"]:checked + .icons .icon-checked {
-    color: #6dd0f2;
+    color: #666;
 }
 
 .radio .icon-checked{
