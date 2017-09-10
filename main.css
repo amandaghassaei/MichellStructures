@@ -58,7 +58,7 @@ img{
     width: 330px;
         padding: 20px;
     text-align: right;
-    overflow-y: scroll;
+    overflow-y: auto;
     height: 100%;
 }
 
