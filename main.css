@@ -26,6 +26,9 @@ a{
 a:hover{
     color:#8cbaed;
 }
+a:visited{
+    color:#8cbaed;
+}
 
 img{
     width:60px;
