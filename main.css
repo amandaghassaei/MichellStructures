@@ -58,6 +58,8 @@ img{
     width: 330px;
         padding: 20px;
     text-align: right;
+    overflow-y: scroll;
+    height: 100%;
 }
 
 .scaleBars{
