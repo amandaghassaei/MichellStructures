@@ -1,5 +1,7 @@
 # MichellStructures
 
+<img src="michell.jpg" />
+
 This is a web-based simulation tool that visualizes geometric properties and static internal forces in a loaded Michell cantilever anchored at two points.  A live demo is available [here](http://git.amandaghassaei.com/MichellStructures/).
 
 Michell geometry is parameterized by total length (Length), distance between attachment points (Height), and number of truss layers (n) - additional x and y scaling may also be applied.  Internal static forces are calculated using the [method of joints](https://en.wikibooks.org/wiki/Statics/Method_of_Joints).
