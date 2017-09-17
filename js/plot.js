@@ -164,6 +164,9 @@ function plotNodes(nodes, n, h, viewMode){
 
 function colorBeams(viewMode){
     //colors
+    _.each(displayBeams, function(beam){
+        beam.updateThickness();
+    });
     if (viewMode == "tension-compression"){
         var forces = [];
         _.each(displayBeams, function(beam){

@@ -6,6 +6,14 @@
 
 var defaultColor = 0x000000;
 
+var beamGeometry = new THREE.Geometry();
+beamGeometry.vertices.push(new THREE.Vector3(-2,-0.5,0));
+beamGeometry.vertices.push(new THREE.Vector3(-2,0.5,0));
+beamGeometry.vertices.push(new THREE.Vector3(2,0.5,0));
+beamGeometry.vertices.push(new THREE.Vector3(2,-0.5,0));
+beamGeometry.faces.push(new THREE.Face3(1,0,3));
+beamGeometry.faces.push(new THREE.Face3(3,2,1));
+
 function Beam(nodes){
 
     nodes[0].addBeam(this);
@@ -15,11 +23,13 @@ function Beam(nodes){
     var lineGeometry = new THREE.Geometry();
     lineGeometry.dynamic = true;
     lineGeometry.vertices = this.vertices;
-    var material = new THREE.LineBasicMaterial({color: defaultColor, linewidth: 3});
+    var material = new THREE.MeshBasicMaterial();
 
-    this.object3D = new THREE.Line(lineGeometry, material);
+    this.object3D = new THREE.Mesh(beamGeometry, material);
     this.object3D._myBeam = this;
     sceneAdd(this.object3D);
+    this.object3D.scale.x = 0.05;
+    this.updatePosition();
 
     this.reset();
 }
@@ -65,6 +75,16 @@ Beam.prototype.reset = function(){
 Beam.prototype.setForce = function(forceMag, angle){
     if (forceMag<0) this.inCompression = true;
     this.force = new THREE.Vector3(forceMag*Math.cos(angle), forceMag*Math.sin(angle), 0);
+    this.updateThickness();
+};
+
+Beam.prototype.updateThickness = function(){
+    if (window.viewMode == "none") {
+        var diameter = 0.025;
+        if (this.force.length()>0) diameter = Math.sqrt(this.force.length())/20;
+        if (diameter<0.025) diameter = 0.025;
+        this.object3D.scale.x = diameter;
+    } else this.object3D.scale.x = 0.05;
 };
 
 Beam.prototype.getForce = function(){
@@ -84,13 +104,21 @@ Beam.prototype.getLength = function(){
     return this.vertices[0].clone().sub(this.vertices[1]).length();
 };
 
+
 Beam.prototype.updatePosition = function(){
-    this.object3D.geometry.verticesNeedUpdate = true;
-    //this.object3D.geometry.normalsNeedUpdate = true;
-    //this.object3D.geometry.computeFaceNormals();
-    //this.object3D.geometry.computeVertexNormals();
-    this.object3D.geometry.computeBoundingSphere();
+    this.object3D.scale.y = this.getLength();
+    var angle = this.getAngle(this.vertices[0])-Math.PI/2;
+    var position = (this.vertices[0].clone().add(this.vertices[1].clone())).multiplyScalar(0.5);
+    this.object3D.position.set(position.x, position.y, position.z);
+    this.object3D.rotation.z = angle;
 };
+// Beam.prototype.updatePosition = function(){
+//     this.object3D.geometry.verticesNeedUpdate = true;
+//     //this.object3D.geometry.normalsNeedUpdate = true;
+//     //this.object3D.geometry.computeFaceNormals();
+//     //this.object3D.geometry.computeVertexNormals();
+//     this.object3D.geometry.computeBoundingSphere();
+// };
 
 Beam.prototype.destroy = function(){
     this.vertices = null;

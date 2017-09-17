@@ -11,7 +11,7 @@ $(function() {
 
     window.addEventListener('resize', function(){
         onWindowResizeThree();
-        if (_nodes) updateNodes(_nodes, _h, _viewMode);
+        if (_nodes) updateNodes(_nodes, _h, window.viewMode);
     }, false);
 
     var $moreInfo = $("#moreInfo");
@@ -33,7 +33,7 @@ $(function() {
         var y = Math.sqrt(1-val*val);
         if (parseFloat($("#yForce").val()) < 0) y *= -1;
         forces[0].setDirection(val, y);
-        updateNodes(_nodes, _h, _viewMode);
+        updateNodes(_nodes, _h, window.viewMode);
     });
     $("#yForce").change(function(){
         var val = $("#yForce").val();
@@ -44,7 +44,7 @@ $(function() {
         var x = Math.sqrt(1-val*val);
         if (parseFloat($("#xForce").val()) < 0) x *= -1;
         forces[0].setDirection(x, val);
-        updateNodes(_nodes, _h, _viewMode);
+        updateNodes(_nodes, _h, window.viewMode);
     });
 
     $("#magForce").change(function(){
@@ -53,10 +53,10 @@ $(function() {
         val = parseFloat(val);
         if (val < 0) val = 0;
         forces[0].setMagnitude(val);
-        updateNodes(_nodes, _h, _viewMode);
+        updateNodes(_nodes, _h, window.viewMode);
     });
 
-    var _viewMode = "force";
+    window.viewMode = "force";
 
     $("#about").click(function(e){
         e.preventDefault();
@@ -111,19 +111,19 @@ $(function() {
     setSliderInput(hSlider, "hValInput", function(){
         _h = hSlider.slider('value');
         _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
-        updateNodes(_nodes, _h, _viewMode);
+        updateNodes(_nodes, _h, window.viewMode);
     });
 
     setSliderInput(LSlider, "lValInput", function(){
         _L = LSlider.slider('value');
         _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
-        updateNodes(_nodes, _h, _viewMode);
+        updateNodes(_nodes, _h, window.viewMode);
     });
 
     setSliderInput(nSlider, "nInput", function(){
         _n = nSlider.slider('value');
         _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
-        plotNodes(_nodes, _n, _h, _viewMode);//must recalc connectivity
+        plotNodes(_nodes, _n, _h, window.viewMode);//must recalc connectivity
     });
 
     $("#gammaPrescaled").hide();
@@ -132,7 +132,7 @@ $(function() {
         if (_scaleX != _scaleY) $("#gammaPrescaled").show();
         else $("#gammaPrescaled").hide();
         _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
-        updateNodes(_nodes, _h, _viewMode);
+        updateNodes(_nodes, _h, window.viewMode);
     });
 
     setSliderInput(yScaleSlider, "yScaleInput", function(){
@@ -140,7 +140,7 @@ $(function() {
        if (_scaleX != _scaleY) $("#gammaPrescaled").show();
         else $("#gammaPrescaled").hide();
         _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
-        updateNodes(_nodes, _h, _viewMode);
+        updateNodes(_nodes, _h, window.viewMode);
     });
 
 
@@ -151,10 +151,10 @@ $(function() {
         $("#activeLogo").hide();
     });
 
-    $("input[value="+_viewMode+"]").prop("checked", true);
+    $("input[value="+window.viewMode+"]").prop("checked", true);
     $('input[name=viewMode]').on('change', function() {
-        _viewMode = $('input[name=viewMode]:checked').val();
-        colorBeams(_viewMode);
+        window.viewMode = $('input[name=viewMode]:checked').val();
+        colorBeams(window.viewMode);
         render();
     });
 
@@ -191,7 +191,7 @@ $(function() {
     function dragArrow(e){
         var intersection = raycaster.intersectObject(deactivatePlane);
         forces[0].move(intersection[0].point);
-        updateNodes(_nodes, _h, _viewMode);
+        updateNodes(_nodes, _h, window.viewMode);
         $moreInfo.hide();
     }
 
@@ -231,19 +231,19 @@ $(function() {
                         dragArrow(e);
                     }
                 } else {
-                    if (_viewMode == "none") {
+                    if (window.viewMode == "none") {
 
                     } else {
                         var val = "";
-                        if (_viewMode == "length") {
+                        if (window.viewMode == "length") {
                             val = "Length: " + highlightedObj.getLength().toFixed(2) + " m";
-                        } else if (_viewMode == "force") {
+                        } else if (window.viewMode == "force") {
                             val = "Force: " + highlightedObj.getForceMagnitude().toFixed(2) + " N";
-                        } else if (_viewMode == "tension-compression") {
+                        } else if (window.viewMode == "tension-compression") {
                             var force = highlightedObj.getForceMagnitude();
                             if (highlightedObj.isInCompression()) val = "Compression: " + Math.abs(force).toFixed(2) + " N";
                             else val = "Tension: " + Math.abs(force).toFixed(2) + " N";
-                        } else if (_viewMode == "FL"){
+                        } else if (window.viewMode == "FL"){
                             val = "F x L: " + (highlightedObj.getForceMagnitude()*highlightedObj.getLength()).toFixed(2) + " Nm";
                         }
                         $moreInfo.html(val);
@@ -265,7 +265,7 @@ $(function() {
     }
 
     var _nodes = solveMichell(_h, _L, _n, _scaleX, _scaleY);
-    plotNodes(_nodes, _n, _h, _viewMode);
+    plotNodes(_nodes, _n, _h, window.viewMode);
 
 });
 
