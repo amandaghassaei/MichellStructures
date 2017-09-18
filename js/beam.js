@@ -4,7 +4,7 @@
 
 //var beamMaterial = new THREE.LineBasicMaterial({color: 0x0000ff, linewidth: 3});
 
-var defaultColor = 0x000000;
+var defaultColor = 0x444444;
 
 var beamGeometry = new THREE.Geometry();
 beamGeometry.vertices.push(new THREE.Vector3(-2,-0.5,0));
